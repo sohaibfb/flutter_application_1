@@ -3,6 +3,8 @@ import 'package:flutter_application_1/AddStudent.dart';
 import 'package:flutter_application_1/Menu.dart';
 import 'package:flutter_application_1/Navigation.dart';
 
+import 'AddStudent.dart';
+
 class LandingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -27,7 +29,7 @@ class LandingPage extends StatelessWidget {
         ],
       ),
       body: Center(
-        child: Text('Hello World'),
+        child: Text('Hello world'),
       ),
     );
 
