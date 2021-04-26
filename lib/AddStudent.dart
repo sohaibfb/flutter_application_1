@@ -18,7 +18,7 @@ class _NameState extends State<AddStudent> {
             child: Center(
                 child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
-              children: [TextField()],
+              children: [Text('ID'), TextField()],
             )),
             padding: EdgeInsets.fromLTRB(32, 0, 32, 0)));
   }
