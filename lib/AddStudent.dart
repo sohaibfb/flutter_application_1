@@ -25,7 +25,7 @@ class _NameState extends State<AddStudent> {
   TextEditingController email = new TextEditingController();
 
   Future<String> senddata() async {
-    String url = ("http://sktest87.000webhostapp.com");
+    String url = ("https://sktest87.000webhostapp.com");
     var data = {
       //"id": id.text,
       "firstname": firstName.text,
@@ -204,9 +204,9 @@ class _NameState extends State<AddStudent> {
                     ElevatedButton(
                         onPressed: () {
                           print("pressed");
-                          if (_formkey.currentState.validate()) {
-                            senddata();
-                          } else {}
+                          //if (_formkey.currentState.validate()) {
+                          senddata();
+                          // } else {}
                         },
                         child: Text('Add student')),
                   ],

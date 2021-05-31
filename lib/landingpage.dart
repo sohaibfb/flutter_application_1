@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/AddStudent.dart';
+import 'package:flutter_application_1/students.dart';
 import 'package:flutter_application_1/Menu.dart';
 import 'package:flutter_application_1/Navigation.dart';
 
@@ -41,7 +41,7 @@ void choiceAction(String choice, BuildContext context) {
   switch (choice) {
     case Menu.settings_students:
       Navigation nav = new Navigation();
-      nav.navigater(context, AddStudent());
+      nav.navigater(context, Students());
 
       break;
   }
