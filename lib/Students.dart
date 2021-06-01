@@ -12,6 +12,7 @@ class Students extends StatefulWidget {
 }
 
 class _NameState extends State<Students> {
+   List _users = [];
   TextEditingController firstName = new TextEditingController();
   TextEditingController midName = new TextEditingController();
   TextEditingController lastName = new TextEditingController();
@@ -47,7 +48,8 @@ class _NameState extends State<Students> {
           },
           child: Icon(Icons.add),
         ),
-        body: ListView(
+        body: ListView.builder(
+          itemCount: ,
           children: <Widget>[Text('data'), Text('data2')],
         ));
   }
