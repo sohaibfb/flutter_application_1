@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/AddStudent.dart';
 import 'dart:async';
 import 'package:flutter_application_1/Navigation.dart';
+import 'package:flutter_application_1/Student.dart';
 import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class Students extends StatefulWidget {
   Students({Key key}) : super(key: key);
@@ -12,26 +14,25 @@ class Students extends StatefulWidget {
 }
 
 class _NameState extends State<Students> {
-  List _users = [];
-  TextEditingController firstName = new TextEditingController();
-  TextEditingController midName = new TextEditingController();
-  TextEditingController lastName = new TextEditingController();
-  TextEditingController nationalId = new TextEditingController();
-  TextEditingController grade = new TextEditingController();
-  TextEditingController studentClass = new TextEditingController();
-  TextEditingController transportionType = new TextEditingController();
-  TextEditingController parentName = new TextEditingController();
-  TextEditingController mobile = new TextEditingController();
-  TextEditingController email = new TextEditingController();
+  List<Student> _studentList = [];
 
-  Future<String> getdata() async {
+  Future<List<Student>> getdata() async {
+    List studentList = [];
     var response = await http.get(
         Uri.parse("https://sktest87.000webhostapp.com/loadstudentsinfo.php"));
     if (response.statusCode == 200) {
       print("data loaded");
+
       print(response.body);
+
+      var studentsJson = jsonDecode(response.body);
+      for (var studentJson in studentsJson) {
+        studentList.add(Student.fromJson(studentJson));
+      }
+      return studentList;
+    } else {
+      throw Exception("failed to load");
     }
-    return "success";
   }
 
   //final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
@@ -55,6 +56,8 @@ class _NameState extends State<Students> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    getdata();
+    setState(() {
+      getdata();
+    });
   }
 }
