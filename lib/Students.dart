@@ -14,10 +14,10 @@ class Students extends StatefulWidget {
 }
 
 class _NameState extends State<Students> {
-  List<Student> _studentList = [];
+  Future<List<Student>> _studentList;
 
   Future<List<Student>> getdata() async {
-    List studentList = [];
+    List<Student> studentList = [];
     var response = await http.get(
         Uri.parse("https://sktest87.000webhostapp.com/loadstudentsinfo.php"));
     if (response.statusCode == 200) {
@@ -49,7 +49,41 @@ class _NameState extends State<Students> {
           },
           child: Icon(Icons.add),
         ),
-        body: Container());
+        body: FutureBuilder<List<Student>>(
+            future: _studentList,
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                List<Student> studentData = snapshot.data;
+                return ListView.builder(
+                    itemCount: studentData.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return Container(
+                        child: Card(
+                            child: Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Column(
+                            children: [
+                              Row(
+                                children: [
+                                  Text(studentData[index].id),
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  Text(studentData[index].firstName),
+                                  Text(studentData[index].lastName),
+                                ],
+                              )
+                            ],
+                          ),
+                        )),
+                      );
+                    });
+              } else if (snapshot.hasError) {
+                return Text("${snapshot.error}");
+              }
+              return CircularProgressIndicator();
+            }));
   }
 
   @override
@@ -57,7 +91,7 @@ class _NameState extends State<Students> {
     // TODO: implement initState
     super.initState();
     setState(() {
-      getdata();
+      _studentList = getdata();
     });
   }
 }
