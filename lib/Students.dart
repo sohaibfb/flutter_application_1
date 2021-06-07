@@ -64,8 +64,11 @@ class _NameState extends State<Students> {
                           child: Column(
                             children: [
                               Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
                                 children: [
                                   Text(studentData[index].id),
+                                  Text(studentData[index].nationalId),
                                 ],
                               ),
                               Row(
