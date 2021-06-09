@@ -3,6 +3,7 @@ import 'package:flutter_application_1/AddStudent.dart';
 import 'dart:async';
 import 'package:flutter_application_1/Navigation.dart';
 import 'package:flutter_application_1/Student.dart';
+import 'package:flutter_application_1/StudentProfile.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -57,29 +58,44 @@ class _NameState extends State<Students> {
                 return ListView.builder(
                     itemCount: studentData.length,
                     itemBuilder: (BuildContext context, int index) {
-                      return Container(
-                        child: Card(
+                      return GestureDetector(
+                        onTap: () => itemSelected(studentData[index].firstName,
+                            studentData[index].lastName, context),
+                        child: Container(
+                          child: Card(
                             child: Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: Column(
-                            children: [
-                              Row(
+                              padding: const EdgeInsets.all(16.0),
+                              child: Row(
                                 mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
+                                  Column(
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Text("name:" +
+                                              studentData[index].firstName),
+                                          Text(
+                                            studentData[index].lastName,
+                                          ),
+                                        ],
+                                      ),
+                                      //Text(" "),
+                                      Row(
+                                        children: [
+                                          Text("id:" + studentData[index].id),
+                                          Text("naitonal id:" +
+                                              studentData[index].nationalId),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
                                   Text(studentData[index].id),
-                                  Text(studentData[index].nationalId),
                                 ],
                               ),
-                              Row(
-                                children: [
-                                  Text(studentData[index].firstName),
-                                  Text(studentData[index].lastName),
-                                ],
-                              )
-                            ],
+                            ),
                           ),
-                        )),
+                        ),
                       );
                     });
               } else if (snapshot.hasError) {
@@ -97,4 +113,10 @@ class _NameState extends State<Students> {
       _studentList = getdata();
     });
   }
+}
+
+void itemSelected(String firstName, String lastName, BuildContext context) {
+  Navigator.of(context).push(MaterialPageRoute(
+      builder: (context) =>
+          StudentProfile(firstName: firstName, lastName: lastName)));
 }
