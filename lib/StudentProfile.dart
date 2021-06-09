@@ -21,15 +21,21 @@ class _NameState extends State<StudentProfile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Student Profile"),
-      ),
-      body: Container(
-        child: Center(
-          child: Text(widget.firstName + "  " + widget.lastName),
+        appBar: AppBar(
+          title: Text("Student Profile"),
         ),
-      ),
-    );
+        body: Card(
+          child: Container(
+            child: Center(
+                child: Column(
+              children: <Widget>[
+                Image(height: 100, image: AssetImage('assets/pic1.png')),
+                Text("  "),
+                Text(widget.firstName + "  " + widget.lastName),
+              ],
+            )),
+          ),
+        ));
 
     // TODO: implement build
     throw UnimplementedError();

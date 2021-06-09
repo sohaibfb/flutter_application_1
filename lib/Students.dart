@@ -66,31 +66,20 @@ class _NameState extends State<Students> {
                             child: Padding(
                               padding: const EdgeInsets.all(16.0),
                               child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                textDirection: TextDirection.ltr,
                                 children: [
+                                  Image(
+                                      height: 100,
+                                      image: AssetImage('assets/pic1.png')),
                                   Column(
                                     children: [
-                                      Row(
-                                        children: [
-                                          Text("name:" +
-                                              studentData[index].firstName),
-                                          Text(
-                                            studentData[index].lastName,
-                                          ),
-                                        ],
-                                      ),
-                                      //Text(" "),
-                                      Row(
-                                        children: [
-                                          Text("id:" + studentData[index].id),
-                                          Text("naitonal id:" +
-                                              studentData[index].nationalId),
-                                        ],
-                                      ),
+                                      Text(studentData[index].firstName +
+                                          " " +
+                                          studentData[index].lastName),
+                                      Text(" "),
+                                      Text(studentData[index].nationalId),
                                     ],
                                   ),
-                                  Text(studentData[index].id),
                                 ],
                               ),
                             ),
