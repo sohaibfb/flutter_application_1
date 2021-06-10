@@ -1,10 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/AddStudent.dart';
-import 'dart:async';
-import 'package:flutter_application_1/Navigation.dart';
-import 'package:flutter_application_1/Student.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 
 class StudentProfile extends StatefulWidget {
   final String firstName;
@@ -37,7 +31,6 @@ class _NameState extends State<StudentProfile> {
           ),
         ));
 
-    // TODO: implement build
     throw UnimplementedError();
   }
 }

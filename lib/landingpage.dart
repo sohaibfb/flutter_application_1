@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/Grades.dart';
 import 'package:flutter_application_1/students.dart';
 import 'package:flutter_application_1/Menu.dart';
 import 'package:flutter_application_1/Navigation.dart';
 
-import 'AddStudent.dart';
-
 class LandingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return Scaffold(
       appBar: AppBar(
         title: Text("LandingPage"),
@@ -44,5 +42,8 @@ void choiceAction(String choice, BuildContext context) {
       nav.navigater(context, Students());
 
       break;
+    case Menu.settings_grades_and_classes:
+      Navigation nav = new Navigation();
+      nav.navigater(context, Grades());
   }
 }
