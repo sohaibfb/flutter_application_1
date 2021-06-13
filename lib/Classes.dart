@@ -1,37 +1,36 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/AddGrade.dart';
-import 'package:flutter_application_1/Classes.dart';
+import 'package:flutter_application_1/AddClass.dart';
 import 'dart:async';
 import 'package:flutter_application_1/Navigation.dart';
-import 'package:flutter_application_1/Grade.dart';
+import 'package:flutter_application_1/Class.dart';
 import 'package:flutter_application_1/StudentProfile.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-class Grades extends StatefulWidget {
-  Grades({Key key}) : super(key: key);
+class Classes extends StatefulWidget {
+  Classes({Key key}) : super(key: key);
 
   @override
   _NameState createState() => _NameState();
 }
 
-class _NameState extends State<Grades> {
-  Future<List<Grade>> _gradeList;
+class _NameState extends State<Classes> {
+  Future<List<Class>> _classsList;
 
-  Future<List<Grade>> getdata() async {
-    List<Grade> gradeList = [];
+  Future<List<Class>> getdata() async {
+    List<Class> classList = [];
     var response = await http.get(
-        Uri.parse("https://sktest87.000webhostapp.com/loadgradesinfo.php"));
+        Uri.parse("https://sktest87.000webhostapp.com/loadClassesinfo.php"));
     if (response.statusCode == 200) {
       print("data loaded");
 
       print(response.body);
 
-      var gradesJson = jsonDecode(response.body);
-      for (var gradeJson in gradesJson) {
-        gradeList.add(Grade.fromJson(gradeJson));
+      var classesJson = jsonDecode(response.body);
+      for (var gradeJson in classesJson) {
+        classList.add(Class.fromJson(gradeJson));
       }
-      return gradeList;
+      return classList;
     } else {
       throw Exception("failed to load");
     }
@@ -42,28 +41,28 @@ class _NameState extends State<Grades> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text('Grades'),
+          title: Text('Classes'),
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
             Navigation nav = new Navigation();
-            nav.navigater(context, AddGrade());
+            nav.navigater(context, AddClass());
           },
           child: Icon(Icons.add),
         ),
-        body: FutureBuilder<List<Grade>>(
-            future: _gradeList,
+        body: FutureBuilder<List<Class>>(
+            future: _classsList,
             builder: (context, snapshot) {
               if (snapshot.hasData) {
-                List<Grade> gradeData = snapshot.data;
+                List<Class> classData = snapshot.data;
                 return ListView.builder(
-                    itemCount: gradeData.length,
+                    itemCount: classData.length,
                     itemBuilder: (BuildContext context, int index) {
                       return GestureDetector(
-                        onTap: () {
-                          Navigation nav = new Navigation();
-                          nav.navigater(context, Classes());
-                        },
+                        onTap: () => itemSelected(
+                            classData[index].englishDescription,
+                            classData[index].arabicDescription,
+                            context),
                         child: Container(
                           child: Card(
                             child: Padding(
@@ -76,11 +75,11 @@ class _NameState extends State<Grades> {
                                       image: AssetImage('assets/pic1.png')),
                                   Column(
                                     children: [
-                                      Text(gradeData[index].englishDescription +
+                                      Text(classData[index].englishDescription +
                                           " " +
-                                          gradeData[index].arabicDescription),
+                                          classData[index].arabicDescription),
                                       Text(" "),
-                                      Text(gradeData[index].id),
+                                      Text(classData[index].id),
                                     ],
                                   ),
                                 ],
@@ -101,7 +100,7 @@ class _NameState extends State<Grades> {
   void initState() {
     super.initState();
     setState(() {
-      _gradeList = getdata();
+      _classsList = getdata();
     });
   }
 }
