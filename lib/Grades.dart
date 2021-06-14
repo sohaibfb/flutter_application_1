@@ -5,6 +5,7 @@ import 'dart:async';
 import 'package:flutter_application_1/Navigation.dart';
 import 'package:flutter_application_1/Grade.dart';
 import 'package:flutter_application_1/StudentProfile.dart';
+import 'package:flutter_application_1/Students.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -60,10 +61,8 @@ class _NameState extends State<Grades> {
                     itemCount: gradeData.length,
                     itemBuilder: (BuildContext context, int index) {
                       return GestureDetector(
-                        onTap: () {
-                          Navigation nav = new Navigation();
-                          nav.navigater(context, Classes());
-                        },
+                        onTap: () =>
+                            itemSelected(gradeData[index].serialCode, context),
                         child: Container(
                           child: Card(
                             child: Padding(
@@ -106,9 +105,9 @@ class _NameState extends State<Grades> {
   }
 }
 
-void itemSelected(
-    String englishDescription, String arabicDescription, BuildContext context) {
+void itemSelected(String serialCode, BuildContext context) {
   Navigator.of(context).push(MaterialPageRoute(
-      builder: (context) => StudentProfile(
-          firstName: englishDescription, lastName: arabicDescription)));
+      builder: (context) => Classes(
+            serialCode: serialCode,
+          )));
 }

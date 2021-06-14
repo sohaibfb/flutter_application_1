@@ -18,6 +18,7 @@ class _NameState extends State<AddGrade> {
     String url = ("https://sktest87.000webhostapp.com/addgrade.php");
     var data = {
       //"id": id.text,
+
       "englishname": englishName.text,
       "arabicname": arabicName.text,
     };

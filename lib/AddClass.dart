@@ -4,7 +4,8 @@ import 'dart:async';
 import 'package:http/http.dart' as http;
 
 class AddClass extends StatefulWidget {
-  AddClass({Key key}) : super(key: key);
+  final String id;
+  AddClass({Key key, this.id}) : super(key: key);
 
   @override
   _NameState createState() => _NameState();
@@ -18,6 +19,7 @@ class _NameState extends State<AddClass> {
     String url = ("https://sktest87.000webhostapp.com/addclass.php");
     var data = {
       //"id": id.text,
+      "id": widget.id,
       "englishname": englishName.text,
       "arabicname": arabicName.text,
     };

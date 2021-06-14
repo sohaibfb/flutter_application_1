@@ -8,7 +8,8 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class Classes extends StatefulWidget {
-  Classes({Key key}) : super(key: key);
+  final String serialCode;
+  Classes({Key key, this.serialCode}) : super(key: key);
 
   @override
   _NameState createState() => _NameState();
@@ -19,17 +20,23 @@ class _NameState extends State<Classes> {
 
   Future<List<Class>> getdata() async {
     List<Class> classList = [];
-    var response = await http.get(
-        Uri.parse("https://sktest87.000webhostapp.com/loadClassesinfo.php"));
+    var data = {"serialcode": widget.serialCode};
+    String url = ("https://sktest87.000webhostapp.com/loadclassesinfo.php");
+    var response = await http.post(Uri.parse(url), body: data);
     if (response.statusCode == 200) {
       print("data loaded");
 
       print(response.body);
 
-      var classesJson = jsonDecode(response.body);
-      for (var gradeJson in classesJson) {
-        classList.add(Class.fromJson(gradeJson));
+      if (response.body != "") {
+        var classesJson = jsonDecode(response.body);
+        for (var gradeJson in classesJson) {
+          classList.add(Class.fromJson(gradeJson));
+        }
+      } else {
+        classList.add(new Class(arabicDescription: "No Classed definedyet"));
       }
+
       return classList;
     } else {
       throw Exception("failed to load");
@@ -44,10 +51,7 @@ class _NameState extends State<Classes> {
           title: Text('Classes'),
         ),
         floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            Navigation nav = new Navigation();
-            nav.navigater(context, AddClass());
-          },
+          onPressed: () => itemSelected(widget.serialCode, null, context),
           child: Icon(Icons.add),
         ),
         body: FutureBuilder<List<Class>>(
@@ -90,7 +94,7 @@ class _NameState extends State<Classes> {
                       );
                     });
               } else if (snapshot.hasError) {
-                return Text("${snapshot.error}");
+                return Text(" the message is : " + "${snapshot.error}");
               }
               return CircularProgressIndicator();
             }));
@@ -105,9 +109,9 @@ class _NameState extends State<Classes> {
   }
 }
 
-void itemSelected(
-    String englishDescription, String arabicDescription, BuildContext context) {
+void itemSelected(String id, String arabicDescription, BuildContext context) {
   Navigator.of(context).push(MaterialPageRoute(
-      builder: (context) => StudentProfile(
-          firstName: englishDescription, lastName: arabicDescription)));
+      builder: (context) => AddClass(
+            id: id,
+          )));
 }
