@@ -22,19 +22,16 @@ class _NameState extends State<Classes> {
     List<Class> classList = [];
     var data = {"serialcode": widget.serialCode};
     String url = ("https://sktest87.000webhostapp.com/loadclassesinfo.php");
-    var response = await http.post(Uri.parse(url), body: data);
+    var response = await http.post(Uri.parse(url),
+        headers: {'Charset': 'utf-8'}, body: data);
     if (response.statusCode == 200) {
       print("data loaded");
 
       print(response.body);
 
-      if (response.body != "") {
-        var classesJson = jsonDecode(response.body);
-        for (var gradeJson in classesJson) {
-          classList.add(Class.fromJson(gradeJson));
-        }
-      } else {
-        classList.add(new Class(arabicDescription: "No Classed definedyet"));
+      var classesJson = jsonDecode(response.body);
+      for (var gradeJson in classesJson) {
+        classList.add(Class.fromJson(gradeJson));
       }
 
       return classList;
@@ -94,7 +91,8 @@ class _NameState extends State<Classes> {
                       );
                     });
               } else if (snapshot.hasError) {
-                return Text(" the message is : " + "${snapshot.error}");
+                return Container(
+                    child: Center(child: Text("No Classes Defined Yet")));
               }
               return CircularProgressIndicator();
             }));
