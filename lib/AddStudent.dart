@@ -148,7 +148,7 @@ class _NameState extends State<AddStudent> {
                           ),
                           DropdownButtonFormField(
                             decoration: InputDecoration(labelText: 'Grade'),
-                            value: gradeData[0].englishDescription,
+                            value: grade,
                             onChanged: (newValue) {
                               setState(() {
                                 grade = newValue;
