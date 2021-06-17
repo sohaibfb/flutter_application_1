@@ -15,11 +15,12 @@ class AddStudent extends StatefulWidget {
 
 class _NameState extends State<AddStudent> {
   Future<List<Grade>> _gradeList;
+  // String dropdownValue = 'One';
   TextEditingController firstName = new TextEditingController();
   TextEditingController midName = new TextEditingController();
   TextEditingController lastName = new TextEditingController();
   TextEditingController nationalId = new TextEditingController();
-  TextEditingController grade = new TextEditingController();
+  String grade;
   TextEditingController studentClass = new TextEditingController();
   TextEditingController transportionType = new TextEditingController();
   TextEditingController parentName = new TextEditingController();
@@ -34,7 +35,7 @@ class _NameState extends State<AddStudent> {
       "midname": midName.text,
       "lastname": lastName.text,
       "nationalid": nationalId.text,
-      "grade": grade.text,
+      "grade": grade,
       "studentclass": studentClass.text,
       "transportationtype": transportionType.text,
       "parentname": parentName.text,
@@ -90,15 +91,6 @@ class _NameState extends State<AddStudent> {
                           top: 8, left: 64, right: 64, bottom: 64),
                       child: ListView(
                         children: [
-                          DropdownButtonFormField(
-                              value: gradeData.first,
-                              items: gradeData
-                                  .map(
-                                    (grade) => DropdownMenuItem<String>(
-                                        value: grade.englishDescription,
-                                        child: Text(grade.englishDescription)),
-                                  )
-                                  .toList()),
                           TextFormField(
                             controller: firstName,
                             decoration:
@@ -154,15 +146,22 @@ class _NameState extends State<AddStudent> {
                           SizedBox(
                             height: 20,
                           ),
-                          TextFormField(
-                            controller: grade,
+                          DropdownButtonFormField(
                             decoration: InputDecoration(labelText: 'Grade'),
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'enter Grade';
-                              }
-                              return null;
+                            value: gradeData[0].englishDescription,
+                            onChanged: (newValue) {
+                              setState(() {
+                                grade = newValue;
+                              });
                             },
+                            items: //<String>['One', 'Two', 'three', 'Four']
+                                gradeData
+                                    .map<DropdownMenuItem<String>>((value) {
+                              return DropdownMenuItem<String>(
+                                value: value.englishDescription,
+                                child: Text(value.englishDescription),
+                              );
+                            }).toList(),
                           ),
                           SizedBox(
                             height: 20,
