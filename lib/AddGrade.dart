@@ -26,7 +26,7 @@ class _NameState extends State<AddGrade> {
     var response = await http.post(Uri.parse(url), body: data);
     if (response.statusCode == 200) {
       print(response.body);
-      Navigator.pop(context);
+      Navigator.pop(context, 'success');
     } else {
       print("network error");
     }

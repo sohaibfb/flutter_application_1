@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:http/http.dart' as http;
+import 'Class.dart';
 import 'Grade.dart';
 
 class AddStudent extends StatefulWidget {
@@ -14,14 +15,15 @@ class AddStudent extends StatefulWidget {
 }
 
 class _NameState extends State<AddStudent> {
+  String grade;
+  String studentClass;
+  String relatedCode;
   Future<List<Grade>> _gradeList;
-  // String dropdownValue = 'One';
+  Future<List<Class>> _classList;
   TextEditingController firstName = new TextEditingController();
   TextEditingController midName = new TextEditingController();
   TextEditingController lastName = new TextEditingController();
   TextEditingController nationalId = new TextEditingController();
-  String grade;
-  TextEditingController studentClass = new TextEditingController();
   TextEditingController transportionType = new TextEditingController();
   TextEditingController parentName = new TextEditingController();
   TextEditingController mobile = new TextEditingController();
@@ -36,7 +38,7 @@ class _NameState extends State<AddStudent> {
       "lastname": lastName.text,
       "nationalid": nationalId.text,
       "grade": grade,
-      "studentclass": studentClass.text,
+      "studentclass": studentClass,
       "transportationtype": transportionType.text,
       "parentname": parentName.text,
       "mobile": mobile.text,
@@ -45,28 +47,49 @@ class _NameState extends State<AddStudent> {
 
     var response = await http.post(Uri.parse(url), body: data);
     if (response.statusCode == 200) {
-      print(response.body);
-      Navigator.pop(context);
+      // print(response.body);
+      Navigator.pop(context, 'success');
     } else {
       print("network error");
     }
     return 'success';
   }
 
-  Future<List<Grade>> getdata() async {
+  Future<List<Grade>> getgradedata() async {
     List<Grade> gradeList = [];
     var response = await http.get(
         Uri.parse("https://sktest87.000webhostapp.com/loadgradesinfo.php"));
     if (response.statusCode == 200) {
-      print("data loaded");
+      //  print("data loaded");
 
-      print(response.body);
+      //  print(response.body);
 
       var gradesJson = jsonDecode(response.body);
       for (var gradeJson in gradesJson) {
         gradeList.add(Grade.fromJson(gradeJson));
       }
       return gradeList;
+    } else {
+      throw Exception("failed to load");
+    }
+  }
+
+  Future<List<Class>> getclassdata() async {
+    List<Class> classList = [];
+    var data = {"serialcode": relatedCode};
+    String url = ("https://sktest87.000webhostapp.com/loadclassesinfo.php");
+    var response = await http.post(Uri.parse(url), body: data);
+    if (response.statusCode == 200) {
+      print("data loaded");
+      print(relatedCode);
+      print(response.body);
+
+      var classesJson = jsonDecode(response.body);
+      for (var gradeJson in classesJson) {
+        classList.add(Class.fromJson(gradeJson));
+      }
+
+      return classList;
     } else {
       throw Exception("failed to load");
     }
@@ -93,8 +116,9 @@ class _NameState extends State<AddStudent> {
                         children: [
                           TextFormField(
                             controller: firstName,
-                            decoration:
-                                InputDecoration(labelText: 'First name'),
+                            decoration: InputDecoration(
+                                border: OutlineInputBorder(),
+                                labelText: 'First name'),
                             validator: (value) {
                               if (value == null || value.isEmpty) {
                                 return 'enter first name';
@@ -107,7 +131,9 @@ class _NameState extends State<AddStudent> {
                           ),
                           TextFormField(
                             controller: midName,
-                            decoration: InputDecoration(labelText: 'M Name'),
+                            decoration: InputDecoration(
+                                border: OutlineInputBorder(),
+                                labelText: 'M Name'),
                             validator: (value) {
                               if (value == null || value.isEmpty) {
                                 return 'enter Middle Name';
@@ -120,7 +146,9 @@ class _NameState extends State<AddStudent> {
                           ),
                           TextFormField(
                             controller: lastName,
-                            decoration: InputDecoration(labelText: 'Last Name'),
+                            decoration: InputDecoration(
+                                border: OutlineInputBorder(),
+                                labelText: 'Last Name'),
                             validator: (value) {
                               if (value == null || value.isEmpty) {
                                 return 'Enter last Name';
@@ -134,8 +162,9 @@ class _NameState extends State<AddStudent> {
                           TextFormField(
                             controller: nationalId,
                             keyboardType: TextInputType.number,
-                            decoration:
-                                InputDecoration(labelText: 'National ID'),
+                            decoration: InputDecoration(
+                                border: OutlineInputBorder(),
+                                labelText: 'National ID'),
                             validator: (value) {
                               if (value == null || value.isEmpty) {
                                 return 'enter National Id';
@@ -147,18 +176,24 @@ class _NameState extends State<AddStudent> {
                             height: 20,
                           ),
                           DropdownButtonFormField(
-                            decoration: InputDecoration(labelText: 'Grade'),
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(),
+                              //labelText: 'Grade'
+                            ),
                             value: grade,
+                            hint: Text("please choose a grade"),
                             onChanged: (newValue) {
                               setState(() {
                                 grade = newValue;
+                                relatedCode = newValue;
+                                _classList = getclassdata();
                               });
                             },
                             items: //<String>['One', 'Two', 'three', 'Four']
                                 gradeData
                                     .map<DropdownMenuItem<String>>((value) {
                               return DropdownMenuItem<String>(
-                                value: value.englishDescription,
+                                value: value.serialCode,
                                 child: Text(value.englishDescription),
                               );
                             }).toList(),
@@ -166,9 +201,36 @@ class _NameState extends State<AddStudent> {
                           SizedBox(
                             height: 20,
                           ),
+                          FutureBuilder(
+                            future: _classList,
+                            builder: (context, snapshot) {
+                              if (snapshot.hasData) {
+                                List<Class> classData = snapshot.data;
+                                return DropdownButtonFormField(
+                                    decoration: InputDecoration(
+                                        border: OutlineInputBorder()),
+                                    // value: studentClass,
+                                    onChanged: (newValue) {
+                                      setState(() {
+                                        studentClass = newValue;
+                                      });
+                                    },
+                                    items: classData
+                                        .map<DropdownMenuItem<String>>((value) {
+                                      return DropdownMenuItem<String>(
+                                        value: value.serialCode,
+                                        child: Text(value.englishDescription),
+                                      );
+                                    }).toList());
+                              } else if (snapshot.hasError) {}
+                              return CircularProgressIndicator();
+                            },
+                          ),
                           TextFormField(
-                            controller: studentClass,
-                            decoration: InputDecoration(labelText: 'Class'),
+                            // controller: studentClass,
+                            decoration: InputDecoration(
+                                border: OutlineInputBorder(),
+                                labelText: 'Class'),
                             validator: (value) {
                               if (value == null || value.isEmpty) {
                                 return 'enter Class';
@@ -182,6 +244,7 @@ class _NameState extends State<AddStudent> {
                           TextFormField(
                             controller: transportionType,
                             decoration: InputDecoration(
+                                border: OutlineInputBorder(),
                                 labelText: 'Transportation Type'),
                             validator: (value) {
                               if (value == null || value.isEmpty) {
@@ -195,8 +258,9 @@ class _NameState extends State<AddStudent> {
                           ),
                           TextFormField(
                             controller: parentName,
-                            decoration:
-                                InputDecoration(labelText: 'Parent Name'),
+                            decoration: InputDecoration(
+                                border: OutlineInputBorder(),
+                                labelText: 'Parent Name'),
                             validator: (value) {
                               if (value == null || value.isEmpty) {
                                 return 'Enter parent Name';
@@ -211,6 +275,7 @@ class _NameState extends State<AddStudent> {
                             controller: mobile,
                             keyboardType: TextInputType.number,
                             decoration: InputDecoration(
+                                border: OutlineInputBorder(),
                                 icon: Icon(Icons.mobile_friendly_sharp),
                                 labelText: 'Mobile'),
                             validator: (value) {
@@ -227,7 +292,9 @@ class _NameState extends State<AddStudent> {
                             controller: email,
                             keyboardType: TextInputType.emailAddress,
                             decoration: InputDecoration(
-                                icon: Icon(Icons.mail), labelText: 'Email'),
+                                border: OutlineInputBorder(),
+                                icon: Icon(Icons.mail),
+                                labelText: 'Email'),
                             validator: (value) {
                               if (value == null || value.isEmpty) {
                                 return 'enter Email';
@@ -258,7 +325,7 @@ class _NameState extends State<AddStudent> {
   void initState() {
     super.initState();
     setState(() {
-      _gradeList = getdata();
+      _gradeList = getgradedata();
     });
   }
 }

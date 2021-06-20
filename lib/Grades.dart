@@ -46,9 +46,13 @@ class _NameState extends State<Grades> {
           title: Text('Grades'),
         ),
         floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            Navigation nav = new Navigation();
-            nav.navigater(context, AddGrade());
+          onPressed: () async {
+            String status = await Navigation().navigater(context, AddGrade());
+            if (status == 'success') {
+              setState(() {
+                _gradeList = getdata();
+              });
+            }
           },
           child: Icon(Icons.add),
         ),
