@@ -209,7 +209,7 @@ class _NameState extends State<AddStudent> {
                                 return DropdownButtonFormField(
                                     decoration: InputDecoration(
                                         border: OutlineInputBorder()),
-                                    // value: studentClass,
+                                    value: studentClass,
                                     onChanged: (newValue) {
                                       setState(() {
                                         studentClass = newValue;
