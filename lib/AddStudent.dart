@@ -227,7 +227,7 @@ class _NameState extends State<AddStudent> {
                               } else if (snapshot.hasError) {
                                 Text("Snapshot error");
                               }
-                              return CircularProgressIndicator();
+                              return DropdownButtonFormField(items: []);
                             },
                           ),
                           TextFormField(
