@@ -61,7 +61,7 @@ class _NameState extends State<AddStudent> {
         Uri.parse("https://sktest87.000webhostapp.com/loadgradesinfo.php"));
     if (response.statusCode == 200) {
       //  print("data loaded");
-
+      //   print("Related code: " + relatedCode);
       //  print(response.body);
 
       var gradesJson = jsonDecode(response.body);
@@ -81,7 +81,7 @@ class _NameState extends State<AddStudent> {
     var response = await http.post(Uri.parse(url), body: data);
     if (response.statusCode == 200) {
       print("data loaded");
-      print(relatedCode);
+      print("Class related code: " + relatedCode);
       print(response.body);
 
       var classesJson = jsonDecode(response.body);
@@ -186,6 +186,8 @@ class _NameState extends State<AddStudent> {
                               setState(() {
                                 grade = newValue;
                                 relatedCode = newValue;
+                                studentClass = null;
+                                print(" grade Related code: " + relatedCode);
                                 _classList = getclassdata();
                               });
                             },
@@ -222,7 +224,9 @@ class _NameState extends State<AddStudent> {
                                         child: Text(value.englishDescription),
                                       );
                                     }).toList());
-                              } else if (snapshot.hasError) {}
+                              } else if (snapshot.hasError) {
+                                Text("Snapshot error");
+                              }
                               return CircularProgressIndicator();
                             },
                           ),
@@ -324,6 +328,7 @@ class _NameState extends State<AddStudent> {
   @override
   void initState() {
     super.initState();
+
     setState(() {
       _gradeList = getgradedata();
     });
