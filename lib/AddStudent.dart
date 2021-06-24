@@ -1,11 +1,12 @@
 import 'dart:convert';
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 import 'Class.dart';
 import 'Grade.dart';
+import 'package:uuid/uuid.dart';
 
 class AddStudent extends StatefulWidget {
   AddStudent({Key key}) : super(key: key);
@@ -18,6 +19,7 @@ class _NameState extends State<AddStudent> {
   String grade;
   String studentClass;
   String relatedCode;
+  FocusNode myFocusNode;
   Future<List<Grade>> _gradeList;
   Future<List<Class>> _classList;
   TextEditingController firstName = new TextEditingController();
@@ -48,6 +50,7 @@ class _NameState extends State<AddStudent> {
     var response = await http.post(Uri.parse(url), body: data);
     if (response.statusCode == 200) {
       // print(response.body);
+
       Navigator.pop(context, 'success');
     } else {
       print("network error");
@@ -121,7 +124,7 @@ class _NameState extends State<AddStudent> {
                                 labelText: 'First name'),
                             validator: (value) {
                               if (value == null || value.isEmpty) {
-                                return 'enter first name';
+                                return 'Enter First Name';
                               }
                               return null;
                             },
@@ -176,6 +179,7 @@ class _NameState extends State<AddStudent> {
                             height: 20,
                           ),
                           DropdownButtonFormField(
+                            focusNode: myFocusNode,
                             decoration: InputDecoration(
                               border: OutlineInputBorder(),
                               //labelText: 'Grade'
@@ -183,11 +187,11 @@ class _NameState extends State<AddStudent> {
                             value: grade,
                             hint: Text("please choose a grade"),
                             onChanged: (newValue) {
+                              myFocusNode.requestFocus();
                               setState(() {
                                 grade = newValue;
                                 relatedCode = newValue;
                                 studentClass = null;
-                                print(" grade Related code: " + relatedCode);
                                 _classList = getclassdata();
                               });
                             },
@@ -209,10 +213,13 @@ class _NameState extends State<AddStudent> {
                               if (snapshot.hasData) {
                                 List<Class> classData = snapshot.data;
                                 return DropdownButtonFormField(
+                                    focusNode: myFocusNode,
+                                    hint: Text("please choose a class"),
                                     decoration: InputDecoration(
                                         border: OutlineInputBorder()),
                                     value: studentClass,
                                     onChanged: (newValue) {
+                                      myFocusNode.requestFocus();
                                       setState(() {
                                         studentClass = newValue;
                                       });
@@ -227,19 +234,11 @@ class _NameState extends State<AddStudent> {
                               } else if (snapshot.hasError) {
                                 Text("Snapshot error");
                               }
-                              return DropdownButtonFormField(items: []);
-                            },
-                          ),
-                          TextFormField(
-                            // controller: studentClass,
-                            decoration: InputDecoration(
-                                border: OutlineInputBorder(),
-                                labelText: 'Class'),
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'enter Class';
-                              }
-                              return null;
+                              return DropdownButtonFormField(
+                                  hint: Text("please choose a class"),
+                                  decoration: InputDecoration(
+                                      border: OutlineInputBorder()),
+                                  items: []);
                             },
                           ),
                           SizedBox(
@@ -312,7 +311,7 @@ class _NameState extends State<AddStudent> {
                           ElevatedButton(
                               onPressed: () {
                                 print("pressed");
-                                //if (_formkey.currentState.validate()) {
+                                // if (_formkey.currentState.validate()) {
                                 senddata();
                                 // } else {}
                               },
@@ -328,9 +327,17 @@ class _NameState extends State<AddStudent> {
   @override
   void initState() {
     super.initState();
+    myFocusNode = FocusNode();
 
     setState(() {
       _gradeList = getgradedata();
     });
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    firstName.dispose();
+    super.dispose();
   }
 }

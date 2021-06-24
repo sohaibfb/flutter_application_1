@@ -6,6 +6,7 @@ import 'package:flutter_application_1/Student.dart';
 import 'package:flutter_application_1/StudentProfile.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:uuid/uuid.dart';
 
 class Students extends StatefulWidget {
   Students({Key key}) : super(key: key);
@@ -23,6 +24,9 @@ class _NameState extends State<Students> {
         Uri.parse("https://sktest87.000webhostapp.com/loadstudentsinfo.php"));
     if (response.statusCode == 200) {
       print("data loaded");
+      var id = Uuid();
+      var v4 = id.v4();
+      print(v4);
 
       print(response.body);
 
