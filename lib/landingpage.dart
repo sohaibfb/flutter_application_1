@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/Grades.dart';
+import 'package:flutter_application_1/Users.dart';
 import 'package:flutter_application_1/students.dart';
 import 'package:flutter_application_1/Menu.dart';
 import 'package:flutter_application_1/Navigation.dart';
@@ -45,5 +46,10 @@ void choiceAction(String choice, BuildContext context) {
     case Menu.settings_grades_and_classes:
       Navigation nav = new Navigation();
       nav.navigater(context, Grades());
+      break;
+
+    case Menu.settings_accounts_and_permissions:
+      Navigation nav = new Navigation();
+      nav.navigater(context, Users());
   }
 }
