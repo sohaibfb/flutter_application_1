@@ -16,12 +16,17 @@ class Menu {
   static const String settings_signout = "Sign Out";
   static const String settings_notification = "notifications";
 
-  static const List<String> menuChoice = <String>[
+  static const List<String> adminMenuChoice = <String>[
     Profile,
     settings_students,
     settings_grades_and_classes,
     settings_accounts_and_permissions,
     settings_preferences,
     settings_dashboards
+  ];
+
+  static const List<String> accountMenuChoice = <String>[
+    settings_admin,
+    settings_parents_pending_requests,
   ];
 }
