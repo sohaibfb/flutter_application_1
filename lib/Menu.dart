@@ -28,5 +28,6 @@ class Menu {
   static const List<String> accountMenuChoice = <String>[
     settings_admin,
     settings_parents_pending_requests,
+    settings_signout,
   ];
 }

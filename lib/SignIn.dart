@@ -34,10 +34,11 @@ class _NameState extends State<SignIn> {
       var token = uuid.v4();
       SharedPreferences prefs = await SharedPreferences.getInstance();
       await prefs.setString('token', 'signedin');
-      //print(prefs.getString('token'));
-      // print(response.body);
+      print(prefs.getString('token'));
+      print(response.body);
 
-      Navigation().navigater(context, AccountHomepage());
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => AccountHomepage()));
     } else {
       print("network error");
     }
@@ -109,7 +110,10 @@ class _NameState extends State<SignIn> {
 
 void checkSingedin(BuildContext context) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  if (prefs.getString('token') == 'signed') {
-    Navigation().navigater(context, AccountHomepage());
+  if (prefs.getString('token') == 'signedin') {
+    // Navigation().navigater(context, AccountHomepage());
+
+    Navigator.pushReplacement(
+        context, MaterialPageRoute(builder: (context) => AccountHomepage()));
   }
 }
