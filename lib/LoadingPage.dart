@@ -1,0 +1,41 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_application_1/Grades.dart';
+import 'package:flutter_application_1/SignIn.dart';
+import 'package:flutter_application_1/Users.dart';
+import 'package:flutter_application_1/students.dart';
+import 'package:flutter_application_1/Menu.dart';
+import 'package:flutter_application_1/Navigation.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'landingpage.dart';
+
+class AccountHomepage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(""),
+        actions: <Widget>[],
+      ),
+      body: Center(
+        child: Text('Hello world'),
+      ),
+    );
+
+    throw UnimplementedError();
+  }
+}
+
+void choiceAction(String choice, BuildContext context) async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  switch (choice) {
+    case Menu.settings_admin:
+      Navigation().navigater(context, LandingPage());
+      break;
+
+    case Menu.settings_signout:
+      prefs.remove('token');
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => SignIn()));
+      break;
+  }
+}

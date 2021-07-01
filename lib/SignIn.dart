@@ -50,7 +50,7 @@ class _NameState extends State<SignIn> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text('Sign Up'),
+          title: Text('Sign In'),
         ),
         body: Form(
             key: _formkey,
@@ -110,7 +110,9 @@ class _NameState extends State<SignIn> {
 
 void checkSingedin(BuildContext context) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
+  print(prefs.getString('token'));
   if (prefs.getString('token') == 'signedin') {
+    print(prefs.getString('token'));
     // Navigation().navigater(context, AccountHomepage());
 
     Navigator.pushReplacement(
