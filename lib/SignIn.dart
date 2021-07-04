@@ -18,8 +18,10 @@ class SignIn extends StatefulWidget {
 class _NameState extends State<SignIn> {
   TextEditingController username = new TextEditingController();
   TextEditingController password = new TextEditingController();
+  Future<String> _checkStatus;
 
   Future<String> senddata() async {
+    String status;
     String url = ("https://sktest87.000webhostapp.com/signin.php");
     var data = {
       //"id": id.text,
@@ -32,17 +34,23 @@ class _NameState extends State<SignIn> {
     if (response.statusCode == 200) {
       var uuid = Uuid();
       var token = uuid.v4();
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      await prefs.setString('token', 'signedin');
-      print(prefs.getString('token'));
-      print(response.body);
 
-      Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => AccountHomepage()));
+      print(response.body);
+      if (response.body == "TRUE") {
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.setString('token', 'signedin');
+        print(prefs.getString('token'));
+        status = '1';
+        return response.body;
+      } else {
+        status = '0';
+        print('objext');
+        return response.body;
+      }
     } else {
       print("network error");
     }
-    return 'success';
+    return response.body;
   }
 
   final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
@@ -52,70 +60,91 @@ class _NameState extends State<SignIn> {
         appBar: AppBar(
           title: Text('Sign In'),
         ),
-        body: Form(
-            key: _formkey,
-            child: Padding(
-                padding:
-                    EdgeInsets.only(top: 8, left: 64, right: 64, bottom: 64),
-                child: ListView(
-                  children: [
-                    TextFormField(
-                      controller: username,
-                      decoration: InputDecoration(labelText: 'username'),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'enter username';
-                        }
-                        return null;
-                      },
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    TextFormField(
-                      controller: password,
-                      decoration: InputDecoration(labelText: 'password'),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'enter password';
-                        }
-                        return null;
-                      },
-                    ),
-                    ElevatedButton(
-                        onPressed: () {
-                          print("pressed");
-                          //if (_formkey.currentState.validate()) {
-                          senddata();
-                          // } else {}
-                        },
-                        child: Text('sign in')),
-                    ElevatedButton(
-                        onPressed: () {
-                          Navigation().navigater(context, SignUp());
-                        },
-                        child: Text('sign up'))
-                  ],
-                ))));
+        body: FutureBuilder(
+          future: _checkStatus,
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              if (snapshot.data == 'TRUE') {
+                print('hello');
+                Navigator.pushReplacement(context,
+                    MaterialPageRoute(builder: (context) => AccountHomepage()));
+              } else {
+                print('false');
+                showDialog(
+                  context: context,
+                  builder: (context) {
+                    return AlertDialog(
+                      title: Text('error'),
+                      content: Text('user does not exit'),
+                      actions: [
+                        TextButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            child: Text('ok'))
+                      ],
+                    );
+                  },
+                );
+              }
+            } else if (snapshot.hasError) {
+              return Text("${snapshot.error}");
+            }
+
+            return Form(
+                key: _formkey,
+                child: Padding(
+                    padding: EdgeInsets.only(
+                        top: 8, left: 64, right: 64, bottom: 64),
+                    child: ListView(
+                      children: [
+                        TextFormField(
+                          controller: username,
+                          decoration: InputDecoration(labelText: 'username'),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'enter username';
+                            }
+                            return null;
+                          },
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        TextFormField(
+                          controller: password,
+                          decoration: InputDecoration(labelText: 'password'),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'enter password';
+                            }
+                            return null;
+                          },
+                        ),
+                        ElevatedButton(
+                            onPressed: () {
+                              print("pressed");
+                              //if (_formkey.currentState.validate()) {
+                              _checkStatus = senddata();
+
+                              // } else {}
+                            },
+                            child: Text('sign in')),
+                        ElevatedButton(
+                            onPressed: () {
+                              Navigation().navigater(context, SignUp());
+                            },
+                            child: Text('sign up'))
+                      ],
+                    )));
+          },
+        ));
   }
 
   @override
   void initState() {
     // TODO: implement initState
 
-    checkSingedin(context);
     super.initState();
-  }
-}
-
-void checkSingedin(BuildContext context) async {
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  print(prefs.getString('token'));
-  if (prefs.getString('token') == 'signedin') {
-    print(prefs.getString('token'));
-    // Navigation().navigater(context, AccountHomepage());
-
-    Navigator.pushReplacement(
-        context, MaterialPageRoute(builder: (context) => AccountHomepage()));
   }
 }

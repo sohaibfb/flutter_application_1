@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/LoadingPage.dart';
 import 'package:flutter_application_1/SignIn.dart';
 import 'package:flutter_application_1/landingpage.dart';
 import 'package:flutter_application_1/AccountHomepage.dart';
@@ -11,7 +12,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Welcome to Flutter',
-      home: SignIn(),
+      home: LoadingPage(),
 
       //color: Colors.amber,
     );

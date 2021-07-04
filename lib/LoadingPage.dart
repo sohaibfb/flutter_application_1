@@ -6,9 +6,17 @@ import 'package:flutter_application_1/students.dart';
 import 'package:flutter_application_1/Menu.dart';
 import 'package:flutter_application_1/Navigation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'AccountHomepage.dart';
 import 'landingpage.dart';
 
-class AccountHomepage extends StatelessWidget {
+class LoadingPage extends StatefulWidget {
+  @override
+  _LoadingPageState createState() {
+    return _LoadingPageState();
+  }
+}
+
+class _LoadingPageState extends State<LoadingPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,25 +25,31 @@ class AccountHomepage extends StatelessWidget {
         actions: <Widget>[],
       ),
       body: Center(
-        child: Text('Hello world'),
+        child: CircularProgressIndicator(),
       ),
     );
 
     throw UnimplementedError();
   }
+
+  @override
+  void initState() {
+    super.initState();
+    checkSingedin(context);
+  }
 }
 
-void choiceAction(String choice, BuildContext context) async {
+void checkSingedin(BuildContext context) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  switch (choice) {
-    case Menu.settings_admin:
-      Navigation().navigater(context, LandingPage());
-      break;
+  print(prefs.getString('token'));
+  if (prefs.getString('token') == 'signedin') {
+    print(prefs.getString('token'));
+    // Navigation().navigater(context, AccountHomepage());
 
-    case Menu.settings_signout:
-      prefs.remove('token');
-      Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => SignIn()));
-      break;
+    Navigator.pushReplacement(
+        context, MaterialPageRoute(builder: (context) => AccountHomepage()));
+  } else {
+    Navigator.pushReplacement(
+        context, MaterialPageRoute(builder: (context) => SignIn()));
   }
 }
