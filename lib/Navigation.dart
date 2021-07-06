@@ -7,4 +7,10 @@ class Navigation {
         .push(MaterialPageRoute(builder: (context) => widget));
     return result;
   }
+
+  replacer(BuildContext context, Widget widget) async {
+    final result = await Navigator.pushReplacement(
+        context, MaterialPageRoute(builder: (context) => widget));
+    return result;
+  }
 }

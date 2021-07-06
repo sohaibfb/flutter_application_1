@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/AccountHomepage.dart';
@@ -35,110 +37,79 @@ class _NameState extends State<SignIn> {
       var uuid = Uuid();
       var token = uuid.v4();
 
-      print(response.body);
-      if (response.body == "TRUE") {
+      if (response.body.trim() == "TRUE1") {
         SharedPreferences prefs = await SharedPreferences.getInstance();
         await prefs.setString('token', 'signedin');
         print(prefs.getString('token'));
         status = '1';
-        return response.body;
+
+        // return response.body;
       } else {
         status = '0';
         print('objext');
-        return response.body;
+        //return response.body;
       }
     } else {
       print("network error");
     }
-    return response.body;
+    return response.body.trim();
   }
 
   final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text('Sign In'),
-        ),
-        body: FutureBuilder(
-          future: _checkStatus,
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              if (snapshot.data == 'TRUE') {
-                print('hello');
-                Navigator.pushReplacement(context,
-                    MaterialPageRoute(builder: (context) => AccountHomepage()));
-              } else {
-                print('false');
-                showDialog(
-                  context: context,
-                  builder: (context) {
-                    return AlertDialog(
-                      title: Text('error'),
-                      content: Text('user does not exit'),
-                      actions: [
-                        TextButton(
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                            child: Text('ok'))
-                      ],
-                    );
-                  },
-                );
-              }
-            } else if (snapshot.hasError) {
-              return Text("${snapshot.error}");
-            }
-
-            return Form(
-                key: _formkey,
-                child: Padding(
-                    padding: EdgeInsets.only(
-                        top: 8, left: 64, right: 64, bottom: 64),
-                    child: ListView(
-                      children: [
-                        TextFormField(
-                          controller: username,
-                          decoration: InputDecoration(labelText: 'username'),
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'enter username';
-                            }
-                            return null;
-                          },
-                        ),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        TextFormField(
-                          controller: password,
-                          decoration: InputDecoration(labelText: 'password'),
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'enter password';
-                            }
-                            return null;
-                          },
-                        ),
-                        ElevatedButton(
-                            onPressed: () {
-                              print("pressed");
-                              //if (_formkey.currentState.validate()) {
-                              _checkStatus = senddata();
-
-                              // } else {}
-                            },
-                            child: Text('sign in')),
-                        ElevatedButton(
-                            onPressed: () {
-                              Navigation().navigater(context, SignUp());
-                            },
-                            child: Text('sign up'))
-                      ],
-                    )));
-          },
-        ));
+      appBar: AppBar(
+        title: Text('Sign In'),
+      ),
+      body: Form(
+          key: _formkey,
+          child: Padding(
+              padding: EdgeInsets.only(top: 8, left: 64, right: 64, bottom: 64),
+              child: ListView(
+                children: [
+                  TextFormField(
+                    controller: username,
+                    decoration: InputDecoration(labelText: 'username'),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'enter username';
+                      }
+                      return null;
+                    },
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  TextFormField(
+                    controller: password,
+                    decoration: InputDecoration(labelText: 'password'),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'enter password';
+                      }
+                      return null;
+                    },
+                  ),
+                  ElevatedButton(
+                      onPressed: () {
+                        print("pressed");
+                        //if (_formkey.currentState.validate()) {
+                        setState(() {
+                          _checkStatus = senddata();
+                        });
+                        _checkStatus
+                            .then((value) => authinticateUser(context, value));
+                      },
+                      child: Text('sign in')),
+                  ElevatedButton(
+                      onPressed: () {
+                        Navigation().navigater(context, SignUp());
+                      },
+                      child: Text('sign up'))
+                ],
+              ))),
+    );
   }
 
   @override
@@ -146,5 +117,29 @@ class _NameState extends State<SignIn> {
     // TODO: implement initState
 
     super.initState();
+  }
+}
+
+void authinticateUser(BuildContext context, String value) {
+  if (value == 'SIGNED') {
+    Navigator.pushReplacement(
+        context, MaterialPageRoute(builder: (context) => AccountHomepage()));
+  } else if (value == 'user does not exist') {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('error'),
+          content: Text('user does not exit'),
+          actions: [
+            TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Text('ok'))
+          ],
+        );
+      },
+    );
   }
 }

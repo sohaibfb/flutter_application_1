@@ -44,12 +44,13 @@ void checkSingedin(BuildContext context) async {
   print(prefs.getString('token'));
   if (prefs.getString('token') == 'signedin') {
     print(prefs.getString('token'));
-    // Navigation().navigater(context, AccountHomepage());
 
-    Navigator.pushReplacement(
-        context, MaterialPageRoute(builder: (context) => AccountHomepage()));
+    Navigation().replacer(context, AccountHomepage());
+    // Navigator.pushReplacement(
+    //   context, MaterialPageRoute(builder: (context) => AccountHomepage()));
   } else {
-    Navigator.pushReplacement(
-        context, MaterialPageRoute(builder: (context) => SignIn()));
+    Navigation().replacer(context, SignIn());
+    // Navigator.pushReplacement(
+    //   context, MaterialPageRoute(builder: (context) => SignIn()));
   }
 }
