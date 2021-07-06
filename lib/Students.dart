@@ -112,6 +112,10 @@ class _NameState extends State<Students> {
 }
 
 void itemSelected(String firstName, String lastName, BuildContext context) {
+  // Navigator.push(
+  //   context,MaterialPageRoute(
+  //     builder: (context) =>
+  //       StudentProfile(firstName: firstName, lastName: lastName)));
   Navigator.of(context).push(MaterialPageRoute(
       builder: (context) =>
           StudentProfile(firstName: firstName, lastName: lastName)));
