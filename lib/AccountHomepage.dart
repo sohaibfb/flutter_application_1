@@ -6,6 +6,7 @@ import 'package:flutter_application_1/students.dart';
 import 'package:flutter_application_1/Menu.dart';
 import 'package:flutter_application_1/Navigation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'LoadingPageAdmin.dart';
 import 'landingpage.dart';
 
 class AccountHomepage extends StatelessWidget {
@@ -41,7 +42,7 @@ void choiceAction(String choice, BuildContext context) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   switch (choice) {
     case Menu.settings_admin:
-      Navigation().navigater(context, LandingPage());
+      Navigation().navigater(context, LoadingPageAdmin());
       break;
 
     case Menu.settings_signout:

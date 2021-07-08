@@ -37,7 +37,7 @@ class _NameState extends State<SignIn> {
       var uuid = Uuid();
       var token = uuid.v4();
 
-      if (response.body.trim() == "TRUE1") {
+      if (response.body.trim() == "SIGNED") {
         SharedPreferences prefs = await SharedPreferences.getInstance();
         await prefs.setString('token', 'signedin');
         print(prefs.getString('token'));
