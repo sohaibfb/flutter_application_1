@@ -47,6 +47,8 @@ void choiceAction(String choice, BuildContext context) async {
 
     case Menu.settings_signout:
       prefs.remove('token');
+      prefs.remove('tokenadmin');
+      prefs.remove('schoolid');
       Navigator.pushReplacement(
           context, MaterialPageRoute(builder: (context) => SignIn()));
       break;

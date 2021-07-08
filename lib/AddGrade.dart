@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AddGrade extends StatefulWidget {
   AddGrade({Key key}) : super(key: key);
@@ -15,10 +16,11 @@ class _NameState extends State<AddGrade> {
   TextEditingController arabicName = new TextEditingController();
 
   Future<String> senddata() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
     String url = ("https://sktest87.000webhostapp.com/addgrade.php");
     var data = {
       //"id": id.text,
-
+      "schoolid": prefs.get('schoolid'),
       "englishname": englishName.text,
       "arabicname": arabicName.text,
     };

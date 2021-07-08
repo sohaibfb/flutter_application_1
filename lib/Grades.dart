@@ -9,6 +9,8 @@ import 'package:flutter_application_1/Students.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import 'package:shared_preferences/shared_preferences.dart';
+
 class Grades extends StatefulWidget {
   Grades({Key key}) : super(key: key);
 
@@ -20,10 +22,16 @@ class _NameState extends State<Grades> {
   Future<List<Grade>> _gradeList;
 
   Future<List<Grade>> getdata() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String url = ("https://sktest87.000webhostapp.com/loadgradesinfo.php");
+    var data = {
+      "schoolid": prefs.get('schoolid'),
+    };
+
+    var response = await http.post(Uri.parse(url), body: data);
     List<Grade> gradeList = [];
-    var response = await http.get(
-        Uri.parse("https://sktest87.000webhostapp.com/loadgradesinfo.php"));
     if (response.statusCode == 200) {
+      print(prefs.get('schoolid'));
       print("data loaded");
 
       print(response.body);

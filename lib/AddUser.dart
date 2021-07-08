@@ -24,7 +24,7 @@ class _NameState extends State<AddUser> {
     String url = ("https://sktest87.000webhostapp.com/adduser.php");
     var data = {
       //"id": id.text,
-      "school_id": schoolId,
+      "schoolid": schoolId,
       "username": username.text,
       "password": password.text,
     };

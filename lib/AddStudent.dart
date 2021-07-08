@@ -32,9 +32,11 @@ class _NameState extends State<AddStudent> {
   TextEditingController email = new TextEditingController();
 
   Future<String> senddata() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
     String url = ("https://sktest87.000webhostapp.com");
     var data = {
       //"id": id.text,
+      "schoolid": prefs.get('schoolid'),
       "firstname": firstName.text,
       "midname": midName.text,
       "lastname": lastName.text,

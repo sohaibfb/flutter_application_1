@@ -5,6 +5,7 @@ import 'package:flutter_application_1/Navigation.dart';
 import 'package:flutter_application_1/Student.dart';
 import 'package:flutter_application_1/StudentProfile.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 import 'package:uuid/uuid.dart';
 
@@ -19,9 +20,15 @@ class _NameState extends State<Students> {
   Future<List<Student>> _studentList;
 
   Future<List<Student>> getdata() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String url = ("https://sktest87.000webhostapp.com/loadstudentsinfo.php");
+    var data = {
+      "schoolid": prefs.get('schoolid'),
+    };
+
+    var response = await http.post(Uri.parse(url), body: data);
+
     List<Student> studentList = [];
-    var response = await http.get(
-        Uri.parse("https://sktest87.000webhostapp.com/loadstudentsinfo.php"));
     if (response.statusCode == 200) {
       print("data loaded");
       var id = Uuid();

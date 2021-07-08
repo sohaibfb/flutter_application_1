@@ -22,7 +22,8 @@ class Menu {
     settings_grades_and_classes,
     settings_accounts_and_permissions,
     settings_preferences,
-    settings_dashboards
+    settings_dashboards,
+    settings_signout,
   ];
 
   static const List<String> accountMenuChoice = <String>[

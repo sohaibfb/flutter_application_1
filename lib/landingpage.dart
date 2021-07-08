@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/Grades.dart';
+import 'package:flutter_application_1/SignInAdmin.dart';
 import 'package:flutter_application_1/Users.dart';
 import 'package:flutter_application_1/students.dart';
 import 'package:flutter_application_1/Menu.dart';
 import 'package:flutter_application_1/Navigation.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LandingPage extends StatelessWidget {
   @override
@@ -36,7 +38,8 @@ class LandingPage extends StatelessWidget {
   }
 }
 
-void choiceAction(String choice, BuildContext context) {
+void choiceAction(String choice, BuildContext context) async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
   switch (choice) {
     case Menu.settings_students:
       Navigation().navigater(context, Students());
@@ -48,6 +51,13 @@ void choiceAction(String choice, BuildContext context) {
 
     case Menu.settings_accounts_and_permissions:
       Navigation().navigater(context, Users());
+      break;
+
+    case Menu.settings_signout:
+      prefs.remove('tokenadmin');
+      prefs.remove('schoolid');
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => SignInAdmin()));
       break;
   }
 }
