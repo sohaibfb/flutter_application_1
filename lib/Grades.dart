@@ -102,7 +102,8 @@ class _NameState extends State<Grades> {
                       );
                     });
               } else if (snapshot.hasError) {
-                return Text("${snapshot.error}");
+                return Container(
+                    child: Center(child: Text("No Classes Defined Yet")));
               }
               return CircularProgressIndicator();
             }));

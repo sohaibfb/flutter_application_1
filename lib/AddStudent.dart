@@ -61,13 +61,19 @@ class _NameState extends State<AddStudent> {
   }
 
   Future<List<Grade>> getgradedata() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String url = ("https://sktest87.000webhostapp.com/loadgradesinfo.php");
+    var data = {
+      "schoolid": prefs.get('schoolid'),
+    };
+
+    var response = await http.post(Uri.parse(url), body: data);
     List<Grade> gradeList = [];
-    var response = await http.get(
-        Uri.parse("https://sktest87.000webhostapp.com/loadgradesinfo.php"));
     if (response.statusCode == 200) {
-      //  print("data loaded");
-      //   print("Related code: " + relatedCode);
-      //  print(response.body);
+      print(prefs.get('schoolid'));
+      print("data loaded");
+
+      print(response.body);
 
       var gradesJson = jsonDecode(response.body);
       for (var gradeJson in gradesJson) {
