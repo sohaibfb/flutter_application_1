@@ -7,6 +7,7 @@ import 'package:flutter_application_1/Menu.dart';
 import 'package:flutter_application_1/Navigation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'LoadingPageAdmin.dart';
+import 'ParentPendingRequest.dart';
 import 'landingpage.dart';
 
 class AccountHomepage extends StatelessWidget {
@@ -45,12 +46,16 @@ void choiceAction(String choice, BuildContext context) async {
       Navigation().navigater(context, LoadingPageAdmin());
       break;
 
+    case Menu.settings_parents_pending_requests:
+      Navigation().navigater(context, ParentPendingRequest());
+      break;
+
     case Menu.settings_signout:
       prefs.remove('token');
       prefs.remove('tokenadmin');
       prefs.remove('schoolid');
-      Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => SignIn()));
+      prefs.remove('username');
+      Navigation().replacer(context, SignIn());
       break;
   }
 }

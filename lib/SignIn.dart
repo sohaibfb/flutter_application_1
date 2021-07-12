@@ -40,6 +40,7 @@ class _NameState extends State<SignIn> {
       if (response.body.trim() == "SIGNED") {
         SharedPreferences prefs = await SharedPreferences.getInstance();
         await prefs.setString('token', 'signedin');
+        await prefs.setString('username', username.text);
         print(prefs.getString('token'));
         status = '1';
 

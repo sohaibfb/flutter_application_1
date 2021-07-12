@@ -9,21 +9,21 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 import 'package:uuid/uuid.dart';
 
-class Students extends StatefulWidget {
-  Students({Key key}) : super(key: key);
+class ParentPendingRequest extends StatefulWidget {
+  ParentPendingRequest({Key key}) : super(key: key);
 
   @override
   _NameState createState() => _NameState();
 }
 
-class _NameState extends State<Students> {
+class _NameState extends State<ParentPendingRequest> {
   Future<List<Student>> _studentList;
 
   Future<List<Student>> getdata() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String url = ("https://sktest87.000webhostapp.com/loadstudentsinfo.php");
+    String url = ("https://sktest87.000webhostapp.com/loadchildreninfo.php");
     var data = {
-      "schoolid": prefs.get('schoolid'),
+      "username": prefs.get('username'),
     };
 
     var response = await http.post(Uri.parse(url), body: data);
