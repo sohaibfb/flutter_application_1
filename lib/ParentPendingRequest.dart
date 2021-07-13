@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/AddStudent.dart';
+import 'package:flutter_application_1/ApproveParentPendingRequest.dart';
 import 'dart:async';
 import 'package:flutter_application_1/Navigation.dart';
 import 'package:flutter_application_1/Student.dart';
@@ -52,7 +53,7 @@ class _NameState extends State<ParentPendingRequest> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text('Students'),
+          title: Text('Pending Requests'),
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () async {
@@ -74,13 +75,26 @@ class _NameState extends State<ParentPendingRequest> {
                     itemCount: studentData.length,
                     itemBuilder: (BuildContext context, int index) {
                       return GestureDetector(
-                        onTap: () => itemSelected(
-                            studentData[index].firstName,
-                            studentData[index].lastName,
-                            studentData[index].nationalId,
-                            studentData[index].grade,
-                            studentData[index].studentClass,
-                            context),
+                        onTap: () async {
+                          String status = await Navigator.of(context).push(
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      ApproveParentPendingRequest(
+                                        schoolId: studentData[index].schoolId,
+                                        firstName: studentData[index].firstName,
+                                        lastName: studentData[index].lastName,
+                                        nationalId:
+                                            studentData[index].nationalId,
+                                        grade: studentData[index].firstName,
+                                        studentClass:
+                                            studentData[index].studentClass,
+                                      )));
+                          if (status == 'success') {
+                            setState(() {
+                              _studentList = getdata();
+                            });
+                          }
+                        },
                         child: Container(
                           child: Card(
                             child: Padding(
@@ -110,6 +124,7 @@ class _NameState extends State<ParentPendingRequest> {
               } else if (snapshot.hasError) {
                 return Text("${snapshot.error}");
               }
+
               return CircularProgressIndicator();
             }));
   }
@@ -124,13 +139,9 @@ class _NameState extends State<ParentPendingRequest> {
 }
 
 void itemSelected(String firstName, String lastName, String nationalId,
-    String grade, String studentClass, BuildContext context) {
-  // Navigator.push(
-  //   context,MaterialPageRoute(
-  //     builder: (context) =>
-  //       StudentProfile(firstName: firstName, lastName: lastName)));
-  Navigator.of(context).push(MaterialPageRoute(
-      builder: (context) => StudentProfile(
+    String grade, String studentClass, BuildContext context) async {
+  String status = await Navigator.of(context).push(MaterialPageRoute(
+      builder: (context) => ApproveParentPendingRequest(
             firstName: firstName,
             lastName: lastName,
             nationalId: nationalId,

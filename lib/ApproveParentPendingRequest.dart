@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
 
-class StudentProfile extends StatefulWidget {
+class ApproveParentPendingRequest extends StatefulWidget {
+  final String schoolId;
   final String firstName;
   final String lastName;
   final String nationalId;
   final String grade;
   final String studentClass;
 
-  const StudentProfile(
+  const ApproveParentPendingRequest(
       {Key key,
+      this.schoolId,
       this.firstName,
       this.lastName,
       this.nationalId,
@@ -20,7 +24,27 @@ class StudentProfile extends StatefulWidget {
   _NameState createState() => _NameState();
 }
 
-class _NameState extends State<StudentProfile> {
+class _NameState extends State<ApproveParentPendingRequest> {
+  Future<String> updatedata() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String url = ("https://sktest87.000webhostapp.com/updatestudentstatus.php");
+    var data = {
+      "schoolid": prefs.get('schoolid'),
+      "username": prefs.get('username'),
+      "nationalid": widget.nationalId,
+    };
+
+    var response = await http.post(Uri.parse(url), body: data);
+    if (response.statusCode == 200) {
+      print(response.body);
+      if (response.body.trim() == 'data updated successfully')
+        Navigator.pop(context, 'success');
+    } else {
+      print("network error");
+    }
+    return 'success';
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -57,6 +81,11 @@ class _NameState extends State<StudentProfile> {
                     Text('Class: ' + widget.studentClass),
                   ],
                 ),
+                ElevatedButton(
+                    onPressed: () {
+                      updatedata();
+                    },
+                    child: Text('confirm'))
               ],
             ),
           ),

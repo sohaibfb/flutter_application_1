@@ -1,4 +1,5 @@
 class Student {
+  final String schoolId;
   final String id;
   final String firstName;
   final String lastName;
@@ -7,7 +8,8 @@ class Student {
   final String studentClass;
 
   Student(
-      {this.id,
+      {this.schoolId,
+      this.id,
       this.firstName,
       this.lastName,
       this.nationalId,
@@ -16,6 +18,7 @@ class Student {
 
   factory Student.fromJson(Map<String, dynamic> json) {
     return Student(
+        schoolId: json['School_Id'],
         id: json['id'],
         firstName: json['First_Name'],
         lastName: json['last_Name'],
