@@ -19,10 +19,10 @@ class Student {
   factory Student.fromJson(Map<String, dynamic> json) {
     return Student(
         schoolId: json['School_Id'],
-        id: json['id'],
+        id: json['Id'],
         firstName: json['First_Name'],
-        lastName: json['last_Name'],
-        nationalId: json['national_Id'],
+        lastName: json['Last_Name'],
+        nationalId: json['National_Id'],
         grade: json['Grade'],
         studentClass: json['Class']);
   }

@@ -108,6 +108,17 @@ class _NameState extends State<Students> {
                       );
                     });
               } else if (snapshot.hasError) {
+                if (snapshot.data == null) {
+                  return Container(
+                    child: Center(
+                      child: Text(
+                        "No Students Defined Yet",
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  );
+                }
+
                 return Text("${snapshot.error}");
               }
               return CircularProgressIndicator();

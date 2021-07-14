@@ -122,6 +122,17 @@ class _NameState extends State<ParentPendingRequest> {
                       );
                     });
               } else if (snapshot.hasError) {
+                if (snapshot.data == null) {
+                  return Container(
+                    child: Center(
+                      child: Text(
+                        "No Pending Requests",
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  );
+                }
+
                 return Text("${snapshot.error}");
               }
 

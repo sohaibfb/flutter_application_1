@@ -72,6 +72,17 @@ class _NameState extends State<Users> {
                       );
                     });
               } else if (snapshot.hasError) {
+                if (snapshot.data == null) {
+                  return Container(
+                    child: Center(
+                      child: Text(
+                        "No Users Defined Yet",
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  );
+                }
+
                 return Text("${snapshot.error}");
               }
               return CircularProgressIndicator();
