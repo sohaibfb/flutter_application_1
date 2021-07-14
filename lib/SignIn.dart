@@ -59,58 +59,74 @@ class _NameState extends State<SignIn> {
   final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Sign In'),
-      ),
-      body: Form(
-          key: _formkey,
-          child: Padding(
-              padding: EdgeInsets.only(top: 8, left: 64, right: 64, bottom: 64),
-              child: ListView(
-                children: [
-                  TextFormField(
-                    controller: username,
-                    decoration: InputDecoration(labelText: 'username'),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'enter username';
-                      }
-                      return null;
-                    },
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  TextFormField(
-                    controller: password,
-                    decoration: InputDecoration(labelText: 'password'),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'enter password';
-                      }
-                      return null;
-                    },
-                  ),
-                  ElevatedButton(
-                      onPressed: () {
-                        print("pressed");
-                        //if (_formkey.currentState.validate()) {
-                        setState(() {
-                          _checkStatus = senddata();
-                        });
-                        _checkStatus
-                            .then((value) => authinticateUser(context, value));
-                      },
-                      child: Text('sign in')),
-                  ElevatedButton(
-                      onPressed: () {
-                        Navigation().navigater(context, SignUp());
-                      },
-                      child: Text('sign up'))
+    return DefaultTabController(
+        length: 1,
+        child: Scaffold(
+            appBar: AppBar(
+              title: Text('Sign In'),
+              bottom: TabBar(
+                tabs: [
+                  Tab(
+                    text: 'hello',
+                    icon: Icon(Icons.access_alarm),
+                  )
                 ],
-              ))),
-    );
+              ),
+            ),
+            body: TabBarView(
+              children: [
+                Form(
+                    key: _formkey,
+                    child: Padding(
+                        padding: EdgeInsets.only(
+                            top: 8, left: 64, right: 64, bottom: 64),
+                        child: ListView(
+                          children: [
+                            TextFormField(
+                              controller: username,
+                              decoration:
+                                  InputDecoration(labelText: 'username'),
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'enter username';
+                                }
+                                return null;
+                              },
+                            ),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            TextFormField(
+                              controller: password,
+                              decoration:
+                                  InputDecoration(labelText: 'password'),
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'enter password';
+                                }
+                                return null;
+                              },
+                            ),
+                            ElevatedButton(
+                                onPressed: () {
+                                  print("pressed");
+                                  //if (_formkey.currentState.validate()) {
+                                  setState(() {
+                                    _checkStatus = senddata();
+                                  });
+                                  _checkStatus.then((value) =>
+                                      authinticateUser(context, value));
+                                },
+                                child: Text('sign in')),
+                            ElevatedButton(
+                                onPressed: () {
+                                  Navigation().navigater(context, SignUp());
+                                },
+                                child: Text('sign up'))
+                          ],
+                        ))),
+              ],
+            )));
   }
 
   @override
