@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/AccountHomepage.dart';
@@ -8,7 +6,6 @@ import 'package:flutter_application_1/SignUp.dart';
 import 'dart:async';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:uuid/uuid.dart';
 
 class SignIn extends StatefulWidget {
   SignIn({Key key}) : super(key: key);
@@ -34,9 +31,6 @@ class _NameState extends State<SignIn> {
 
     var response = await http.post(Uri.parse(url), body: data);
     if (response.statusCode == 200) {
-      var uuid = Uuid();
-      var token = uuid.v4();
-
       if (response.body.trim() == "SIGNED") {
         SharedPreferences prefs = await SharedPreferences.getInstance();
         await prefs.setString('token', 'signedin');

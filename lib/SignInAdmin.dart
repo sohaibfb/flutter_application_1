@@ -1,10 +1,5 @@
-import 'dart:convert';
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/AccountHomepage.dart';
-import 'package:flutter_application_1/Navigation.dart';
-import 'package:flutter_application_1/SignUp.dart';
 import 'package:flutter_application_1/landingpage.dart';
 import 'dart:async';
 import 'package:http/http.dart' as http;

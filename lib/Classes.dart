@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/AddClass.dart';
 import 'dart:async';
-import 'package:flutter_application_1/Navigation.dart';
 import 'package:flutter_application_1/Class.dart';
-import 'package:flutter_application_1/StudentProfile.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 

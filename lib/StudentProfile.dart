@@ -61,7 +61,5 @@ class _NameState extends State<StudentProfile> {
             ),
           ),
         ));
-
-    throw UnimplementedError();
   }
 }

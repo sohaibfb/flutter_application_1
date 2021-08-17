@@ -7,7 +7,13 @@ import 'package:flutter_application_1/Menu.dart';
 import 'package:flutter_application_1/Navigation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class LandingPage extends StatelessWidget {
+class LandingPage extends StatefulWidget {
+  @override
+  _LandingPageState createState() => _LandingPageState();
+}
+
+class _LandingPageState extends State<LandingPage> {
+  double _value = 0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,11 +36,19 @@ class LandingPage extends StatelessWidget {
         ],
       ),
       body: Center(
-        child: Text('Hello world'),
-      ),
+          child: Slider(
+        value: _value,
+        onChanged: (double value) {
+          setState(() {
+            _value = value;
+          });
+        },
+        divisions: 3,
+        min: 0,
+        max: 100,
+        label: _value.toString(),
+      )),
     );
-
-    throw UnimplementedError();
   }
 }
 

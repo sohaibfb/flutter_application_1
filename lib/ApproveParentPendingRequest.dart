@@ -29,7 +29,7 @@ class _NameState extends State<ApproveParentPendingRequest> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String url = ("https://sktest87.000webhostapp.com/updatestudentstatus.php");
     var data = {
-      "schoolid": prefs.get('schoolid'),
+      "schoolid": widget.schoolId,
       "username": prefs.get('username'),
       "nationalid": widget.nationalId,
     };
@@ -90,7 +90,5 @@ class _NameState extends State<ApproveParentPendingRequest> {
             ),
           ),
         ));
-
-    throw UnimplementedError();
   }
 }

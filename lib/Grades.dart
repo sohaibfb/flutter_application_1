@@ -4,8 +4,6 @@ import 'package:flutter_application_1/Classes.dart';
 import 'dart:async';
 import 'package:flutter_application_1/Navigation.dart';
 import 'package:flutter_application_1/Grade.dart';
-import 'package:flutter_application_1/StudentProfile.dart';
-import 'package:flutter_application_1/Students.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 

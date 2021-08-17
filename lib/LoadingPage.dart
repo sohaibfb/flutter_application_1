@@ -1,13 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/Grades.dart';
 import 'package:flutter_application_1/SignIn.dart';
-import 'package:flutter_application_1/Users.dart';
-import 'package:flutter_application_1/students.dart';
-import 'package:flutter_application_1/Menu.dart';
 import 'package:flutter_application_1/Navigation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'AccountHomepage.dart';
-import 'landingpage.dart';
 
 class LoadingPage extends StatefulWidget {
   @override
@@ -28,8 +23,6 @@ class _LoadingPageState extends State<LoadingPage> {
         child: CircularProgressIndicator(),
       ),
     );
-
-    throw UnimplementedError();
   }
 
   @override

@@ -1,27 +1,28 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/ApproveParentPendingRequest.dart';
 import 'dart:async';
 import 'package:flutter_application_1/Student.dart';
+import 'package:flutter_application_1/StudentProfile.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 import 'package:uuid/uuid.dart';
 
-class ParentPendingRequest extends StatefulWidget {
-  ParentPendingRequest({Key key}) : super(key: key);
+class AccountStudents extends StatefulWidget {
+  AccountStudents({Key key}) : super(key: key);
 
   @override
   _NameState createState() => _NameState();
 }
 
-class _NameState extends State<ParentPendingRequest> {
+class _NameState extends State<AccountStudents> {
   Future<List<Student>> _studentList;
 
   Future<List<Student>> getdata() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String url =
-        ("https://sktest87.000webhostapp.com/loadpendingstudentsinfo.php");
+        ("https://sktest87.000webhostapp.com/loadaccountstudentsinfo.php");
     var data = {
+      "schoolid": prefs.get('schoolid'),
       "username": prefs.get('username'),
     };
 
@@ -51,7 +52,7 @@ class _NameState extends State<ParentPendingRequest> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text('Pending Requests'),
+          title: Text('Students'),
         ),
         body: FutureBuilder<List<Student>>(
             future: _studentList,
@@ -62,26 +63,13 @@ class _NameState extends State<ParentPendingRequest> {
                     itemCount: studentData.length,
                     itemBuilder: (BuildContext context, int index) {
                       return GestureDetector(
-                        onTap: () async {
-                          String status = await Navigator.of(context).push(
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      ApproveParentPendingRequest(
-                                        schoolId: studentData[index].schoolId,
-                                        firstName: studentData[index].firstName,
-                                        lastName: studentData[index].lastName,
-                                        nationalId:
-                                            studentData[index].nationalId,
-                                        grade: studentData[index].grade,
-                                        studentClass:
-                                            studentData[index].studentClass,
-                                      )));
-                          if (status == 'success') {
-                            setState(() {
-                              _studentList = getdata();
-                            });
-                          }
-                        },
+                        onTap: () => itemSelected(
+                            studentData[index].firstName,
+                            studentData[index].lastName,
+                            studentData[index].nationalId,
+                            studentData[index].grade,
+                            studentData[index].studentClass,
+                            context),
                         child: Container(
                           child: Card(
                             child: Padding(
@@ -113,7 +101,7 @@ class _NameState extends State<ParentPendingRequest> {
                   return Container(
                     child: Center(
                       child: Text(
-                        "No Pending Requests",
+                        "No Students Defined Yet",
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
                     ),
@@ -122,7 +110,6 @@ class _NameState extends State<ParentPendingRequest> {
 
                 return Text("${snapshot.error}");
               }
-
               return CircularProgressIndicator();
             }));
   }
@@ -137,9 +124,13 @@ class _NameState extends State<ParentPendingRequest> {
 }
 
 void itemSelected(String firstName, String lastName, String nationalId,
-    String grade, String studentClass, BuildContext context) async {
-  String status = await Navigator.of(context).push(MaterialPageRoute(
-      builder: (context) => ApproveParentPendingRequest(
+    String grade, String studentClass, BuildContext context) {
+  // Navigator.push(
+  //   context,MaterialPageRoute(
+  //     builder: (context) =>
+  //       StudentProfile(firstName: firstName, lastName: lastName)));
+  Navigator.of(context).push(MaterialPageRoute(
+      builder: (context) => StudentProfile(
             firstName: firstName,
             lastName: lastName,
             nationalId: nationalId,

@@ -6,7 +6,6 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'Class.dart';
 import 'Grade.dart';
-import 'package:uuid/uuid.dart';
 
 class AddStudent extends StatefulWidget {
   AddStudent({Key key}) : super(key: key);
