@@ -13,7 +13,7 @@ class LandingPage extends StatefulWidget {
 }
 
 class _LandingPageState extends State<LandingPage> {
-  double _value = 0;
+  double _value = 50;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,17 +36,17 @@ class _LandingPageState extends State<LandingPage> {
         ],
       ),
       body: Center(
-          child: Slider(
-        value: _value,
-        onChanged: (double value) {
-          setState(() {
-            _value = value;
-          });
-        },
-        divisions: 3,
-        min: 0,
-        max: 100,
-        label: _value.toString(),
+          child: Column(
+        children: <Widget>[
+          Slider(
+            value: _value,
+            onChanged: null,
+            divisions: 2,
+            min: 0,
+            max: 100,
+            label: _value.toString(),
+          ),
+        ],
       )),
     );
   }
