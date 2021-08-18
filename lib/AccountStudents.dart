@@ -22,7 +22,7 @@ class _NameState extends State<AccountStudents> {
     String url =
         ("https://sktest87.000webhostapp.com/loadaccountstudentsinfo.php");
     var data = {
-      "schoolid": prefs.get('schoolid'),
+      //"schoolid": prefs.get('schoolid'),
       "username": prefs.get('username'),
     };
 
@@ -43,6 +43,7 @@ class _NameState extends State<AccountStudents> {
       }
       return studentList;
     } else {
+      print('username' + prefs.get('username'));
       throw Exception("failed to load");
     }
   }

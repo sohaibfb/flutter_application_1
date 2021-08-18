@@ -24,25 +24,28 @@ class _NameState extends State<ParentPendingRequest> {
     var data = {
       "username": prefs.get('username'),
     };
+    try {
+      var response = await http.post(Uri.parse(url), body: data);
 
-    var response = await http.post(Uri.parse(url), body: data);
+      List<Student> studentList = [];
+      if (response.statusCode == 200) {
+        print("data loaded");
+        var id = Uuid();
+        var v4 = id.v4();
+        print(v4);
 
-    List<Student> studentList = [];
-    if (response.statusCode == 200) {
-      print("data loaded");
-      var id = Uuid();
-      var v4 = id.v4();
-      print(v4);
+        print(response.body);
 
-      print(response.body);
-
-      var studentsJson = jsonDecode(response.body);
-      for (var studentJson in studentsJson) {
-        studentList.add(Student.fromJson(studentJson));
+        var studentsJson = jsonDecode(response.body);
+        for (var studentJson in studentsJson) {
+          studentList.add(Student.fromJson(studentJson));
+        }
+        return studentList;
+      } else {
+        throw Exception("failed to load");
       }
-      return studentList;
-    } else {
-      throw Exception("failed to load");
+    } catch (e) {
+      throw Exception(e.message);
     }
   }
 
