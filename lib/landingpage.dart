@@ -1,3 +1,5 @@
+import 'dart:html';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/Grades.dart';
 import 'package:flutter_application_1/SignInAdmin.dart';
@@ -6,6 +8,8 @@ import 'package:flutter_application_1/students.dart';
 import 'package:flutter_application_1/Menu.dart';
 import 'package:flutter_application_1/Navigation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_shapes/flutter_shapes.dart';
+import 'package:flutter_application_1/painter.dart';
 
 class LandingPage extends StatefulWidget {
   @override
@@ -36,19 +40,22 @@ class _LandingPageState extends State<LandingPage> {
         ],
       ),
       body: Center(
-          child: Column(
+          child: Row(
         children: <Widget>[
-          Slider(
-            value: _value,
-            onChanged: null,
-            divisions: 2,
-            min: 0,
-            max: 100,
-            label: _value.toString(),
-          ),
+          CustomPaint(
+            painter: painter(1, 2),
+            child: Container(),
+          )
         ],
       )),
     );
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+
+    super.initState();
   }
 }
 
