@@ -1,5 +1,3 @@
-import 'dart:html';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/Grades.dart';
 import 'package:flutter_application_1/SignInAdmin.dart';
@@ -9,7 +7,7 @@ import 'package:flutter_application_1/Menu.dart';
 import 'package:flutter_application_1/Navigation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_shapes/flutter_shapes.dart';
-import 'package:flutter_application_1/painter.dart';
+import 'package:flutter_application_1/ShapePainter.dart';
 
 class LandingPage extends StatefulWidget {
   @override
@@ -17,7 +15,11 @@ class LandingPage extends StatefulWidget {
 }
 
 class _LandingPageState extends State<LandingPage> {
-  double _value = 50;
+  Color circleColor1;
+  Color lineColor1;
+  Color circleColor2;
+  Color lineColor2;
+  Color circleColor3;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,10 +43,23 @@ class _LandingPageState extends State<LandingPage> {
       ),
       body: Center(
           child: Row(
-        children: <Widget>[
-          CustomPaint(
-            painter: painter(1, 2),
-            child: Container(),
+        children: [
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text('data'),
+              Divider(),
+              Divider(),
+              CustomPaint(
+                painter: ShapePainter(
+                    circleColor1: Colors.grey,
+                    lineColor1: Colors.grey,
+                    circleColor2: Colors.grey,
+                    lineColor2: Colors.grey,
+                    circleColor3: Colors.grey),
+                child: Container(),
+              ),
+            ],
           )
         ],
       )),
