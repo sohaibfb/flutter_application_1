@@ -7,7 +7,11 @@ import 'package:flutter_application_1/Menu.dart';
 import 'package:flutter_application_1/Navigation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_shapes/flutter_shapes.dart';
-import 'package:flutter_application_1/ShapePainter.dart';
+import 'package:flutter_application_1/ShapeCircle1.dart';
+import 'package:flutter_application_1/ShapeCircle2.dart';
+import 'package:flutter_application_1/ShapeCircle3.dart';
+import 'package:flutter_application_1/ShapeLine1.dart';
+import 'package:flutter_application_1/ShapeLine2.dart';
 
 class LandingPage extends StatefulWidget {
   @override
@@ -41,38 +45,37 @@ class _LandingPageState extends State<LandingPage> {
               })
         ],
       ),
-      body: Row(
+      body: Center(
+          child: Row(
         children: [
-          Column(
-            //mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text('data'),
-              CustomPaint(
-                painter: ShapePainter(
+          Padding(
+            padding: EdgeInsets.only(left: 12),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                Text('data'),
+                CustomPaint(
+                  painter: ShapeCircle1(
                     circleColor1: Colors.grey,
-                    lineColor1: Colors.grey,
-                    circleColor2: Colors.grey,
-                    lineColor2: Colors.grey,
-                    circleColor3: Colors.grey),
-              ),
-            ],
+                  ),
+                ),
+              ],
+            ),
           ),
           Column(
-            //mainAxisAlignment: MainAxisAlignment.center,
+            // mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text('data1'),
               CustomPaint(
-                painter: ShapePainter(
-                    circleColor1: Colors.grey,
-                    lineColor1: Colors.grey,
-                    circleColor2: Colors.grey,
-                    lineColor2: Colors.grey,
-                    circleColor3: Colors.grey),
-              ),
+                  painter: ShapeLine1(
+                lineColor1: Colors.grey,
+              )),
             ],
           )
         ],
-      ),
+      )),
     );
   }
 
