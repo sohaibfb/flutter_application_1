@@ -41,15 +41,12 @@ class _LandingPageState extends State<LandingPage> {
               })
         ],
       ),
-      body: Center(
-          child: Row(
+      body: Row(
         children: [
           Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+            //mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text('data'),
-              Divider(),
-              Divider(),
               CustomPaint(
                 painter: ShapePainter(
                     circleColor1: Colors.grey,
@@ -57,12 +54,25 @@ class _LandingPageState extends State<LandingPage> {
                     circleColor2: Colors.grey,
                     lineColor2: Colors.grey,
                     circleColor3: Colors.grey),
-                child: Container(),
+              ),
+            ],
+          ),
+          Column(
+            //mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text('data1'),
+              CustomPaint(
+                painter: ShapePainter(
+                    circleColor1: Colors.grey,
+                    lineColor1: Colors.grey,
+                    circleColor2: Colors.grey,
+                    lineColor2: Colors.grey,
+                    circleColor3: Colors.grey),
               ),
             ],
           )
         ],
-      )),
+      ),
     );
   }
 

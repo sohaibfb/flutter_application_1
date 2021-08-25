@@ -22,19 +22,19 @@ class ShapePainter extends CustomPainter {
     final paint = Paint();
 
     paint.color = circleColor1;
-    var cPosition = Offset(30, size.height / 2);
+    var cPosition = Offset(25, size.height / 2);
     canvas.drawCircle(cPosition, 25, paint);
-    var lPosition1 = Offset(55, size.height / 2);
-    var lPosition2 = Offset(75, size.height / 2);
-    paint.strokeWidth = 5;
+    //var lPosition1 = Offset(55, size.height / 2);
+    //var lPosition2 = Offset(75, size.height / 2);
+    //paint.strokeWidth = 5;
 
-    paint.color = lineColor1;
+    //paint.color = lineColor1;
 
-    canvas.drawLine(lPosition1, lPosition2, paint);
+    //canvas.drawLine(lPosition1, lPosition2, paint);
 
-    paint.color = circleColor2;
-    var cPosition2 = Offset(100, size.height / 2);
-    canvas.drawCircle(cPosition2, 25, paint);
+    //paint.color = circleColor2;
+    //var cPosition2 = Offset(100, size.height / 2);
+    //canvas.drawCircle(cPosition2, 25, paint);
   }
 
   @override
