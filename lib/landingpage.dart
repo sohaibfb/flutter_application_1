@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_application_1/Grades.dart';
 import 'package:flutter_application_1/SignInAdmin.dart';
 import 'package:flutter_application_1/Users.dart';
@@ -46,9 +47,11 @@ class _LandingPageState extends State<LandingPage> {
         ],
       ),
       body: Center(
-          child: Row(
-        children: [
-          Padding(
+          child: Container(
+        padding: EdgeInsets.only(left: 8.0, right: 8.0),
+        child: Row(
+          children: [
+            /*Padding(
             padding: EdgeInsets.only(left: 12),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -65,7 +68,8 @@ class _LandingPageState extends State<LandingPage> {
             ),
           ),
           Column(
-            // mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text('data1'),
               CustomPaint(
@@ -73,8 +77,41 @@ class _LandingPageState extends State<LandingPage> {
                 lineColor1: Colors.grey,
               )),
             ],
-          )
-        ],
+        ),*/
+            Flexible(
+              child: Container(
+                alignment: Alignment.center,
+                child: Text('1'),
+                decoration:
+                    BoxDecoration(color: Colors.blue, shape: BoxShape.circle),
+              ),
+            ),
+            Flexible(
+              child: Divider(
+                thickness: 5,
+                color: Colors.blue,
+              ),
+            ),
+            Flexible(
+              child: Container(
+                decoration:
+                    BoxDecoration(color: Colors.blue, shape: BoxShape.circle),
+              ),
+            ),
+            Flexible(
+              child: Divider(
+                thickness: 5,
+                color: Colors.blue,
+              ),
+            ),
+            Flexible(
+              child: Container(
+                decoration:
+                    BoxDecoration(color: Colors.blue, shape: BoxShape.circle),
+              ),
+            )
+          ],
+        ),
       )),
     );
   }
