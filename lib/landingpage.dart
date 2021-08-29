@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_application_1/Grades.dart';
@@ -20,11 +22,8 @@ class LandingPage extends StatefulWidget {
 }
 
 class _LandingPageState extends State<LandingPage> {
-  Color circleColor1;
-  Color lineColor1;
-  Color circleColor2;
-  Color lineColor2;
-  Color circleColor3;
+  Color circleColor1, lineColor1, circleColor2, lineColor2, circleColor3;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,10 +47,72 @@ class _LandingPageState extends State<LandingPage> {
       ),
       body: Center(
           child: Container(
-        padding: EdgeInsets.only(left: 8.0, right: 8.0),
-        child: Row(
-          children: [
-            /*Padding(
+              padding: EdgeInsets.only(left: 8.0, right: 8.0),
+              child: IntrinsicHeight(
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Expanded(
+                      child: Column(
+                        children: [
+                          Text('Home'),
+                          Container(
+                            alignment: Alignment.center,
+                            child: Text(
+                              '1',
+                              style: TextStyle(color: Colors.white),
+                            ),
+                            decoration: BoxDecoration(
+                                color: circleColor1, shape: BoxShape.circle),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Expanded(
+                      child: Divider(
+                        thickness: 5,
+                        color: lineColor1,
+                      ),
+                    ),
+                    Expanded(
+                      child: Column(
+                        children: [
+                          Text('Home'),
+                          Container(
+                            alignment: Alignment.center,
+                            child: Text(
+                              '2',
+                              style: TextStyle(color: Colors.white),
+                            ),
+                            decoration: BoxDecoration(
+                                color: circleColor2, shape: BoxShape.circle),
+                          )
+                        ],
+                      ),
+                    ),
+                    Flexible(
+                      child: Divider(
+                        thickness: 5,
+                        color: lineColor2,
+                      ),
+                    ),
+                    Expanded(
+                      child: Column(
+                        children: [
+                          Text('Home'),
+                          Container(
+                            alignment: Alignment.center,
+                            child: Text(
+                              '3',
+                              style: TextStyle(color: Colors.white),
+                            ),
+                            decoration: BoxDecoration(
+                                color: circleColor3, shape: BoxShape.circle),
+                          ),
+                        ],
+                      ),
+                    )
+                    /*Padding(
             padding: EdgeInsets.only(left: 12),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -78,47 +139,17 @@ class _LandingPageState extends State<LandingPage> {
               )),
             ],
         ),*/
-            Flexible(
-              child: Container(
-                alignment: Alignment.center,
-                child: Text('1'),
-                decoration:
-                    BoxDecoration(color: Colors.blue, shape: BoxShape.circle),
-              ),
-            ),
-            Flexible(
-              child: Divider(
-                thickness: 5,
-                color: Colors.blue,
-              ),
-            ),
-            Flexible(
-              child: Container(
-                decoration:
-                    BoxDecoration(color: Colors.blue, shape: BoxShape.circle),
-              ),
-            ),
-            Flexible(
-              child: Divider(
-                thickness: 5,
-                color: Colors.blue,
-              ),
-            ),
-            Flexible(
-              child: Container(
-                decoration:
-                    BoxDecoration(color: Colors.blue, shape: BoxShape.circle),
-              ),
-            )
-          ],
-        ),
-      )),
+                  ],
+                ),
+              ))),
     );
   }
 
   @override
   void initState() {
     // TODO: implement initState
+    circleColor1 =
+        lineColor1 = circleColor2 = lineColor2 = circleColor3 = Colors.grey;
 
     super.initState();
   }
