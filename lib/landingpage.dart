@@ -8,13 +8,14 @@ import 'package:flutter_application_1/Users.dart';
 import 'package:flutter_application_1/students.dart';
 import 'package:flutter_application_1/Menu.dart';
 import 'package:flutter_application_1/Navigation.dart';
+import 'package:flutter_application_1/transactions.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:flutter_shapes/flutter_shapes.dart';
-import 'package:flutter_application_1/ShapeCircle1.dart';
-import 'package:flutter_application_1/ShapeCircle2.dart';
-import 'package:flutter_application_1/ShapeCircle3.dart';
-import 'package:flutter_application_1/ShapeLine1.dart';
-import 'package:flutter_application_1/ShapeLine2.dart';
+//import 'package:flutter_shapes/flutter_shapes.dart';
+//import 'package:flutter_application_1/ShapeCircle1.dart';
+//import 'package:flutter_application_1/ShapeCircle2.dart';
+//import 'package:flutter_application_1/ShapeCircle3.dart';
+//import 'package:flutter_application_1/ShapeLine1.dart';
+//import 'package:flutter_application_1/ShapeLine2.dart';
 
 class LandingPage extends StatefulWidget {
   @override
@@ -23,6 +24,7 @@ class LandingPage extends StatefulWidget {
 
 class _LandingPageState extends State<LandingPage> {
   Color circleColor1, lineColor1, circleColor2, lineColor2, circleColor3;
+  String homeValue, movingValue, schoolValue;
 
   @override
   Widget build(BuildContext context) {
@@ -46,102 +48,119 @@ class _LandingPageState extends State<LandingPage> {
         ],
       ),
       body: Center(
-          child: Container(
-              padding: EdgeInsets.only(left: 8.0, right: 8.0),
-              child: IntrinsicHeight(
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Expanded(
-                      child: Column(
-                        children: [
-                          Text('Home'),
-                          Container(
-                            alignment: Alignment.center,
-                            child: Text(
-                              '1',
-                              style: TextStyle(color: Colors.white),
-                            ),
-                            decoration: BoxDecoration(
-                                color: circleColor1, shape: BoxShape.circle),
+        child: Container(
+            margin: EdgeInsets.symmetric(vertical: 200),
+            padding: EdgeInsets.only(left: 8.0, right: 8.0),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Column(
+                    children: [
+                      Text('Home'),
+                      Expanded(
+                        child: Container(
+                          alignment: Alignment.center,
+                          child: Text(
+                            homeValue,
+                            style: TextStyle(color: Colors.white),
                           ),
-                        ],
+                          decoration: BoxDecoration(
+                              color: circleColor1, shape: BoxShape.circle),
+                        ),
                       ),
-                    ),
+                    ],
+                  ),
+                ),
+                Expanded(
+                    child: Column(
+                  children: [
+                    Text(""),
                     Expanded(
                       child: Divider(
                         thickness: 5,
                         color: lineColor1,
                       ),
                     ),
-                    Expanded(
-                      child: Column(
-                        children: [
-                          Text('Home'),
-                          Container(
-                            alignment: Alignment.center,
-                            child: Text(
-                              '2',
-                              style: TextStyle(color: Colors.white),
-                            ),
-                            decoration: BoxDecoration(
-                                color: circleColor2, shape: BoxShape.circle),
-                          )
-                        ],
-                      ),
-                    ),
-                    Flexible(
-                      child: Divider(
-                        thickness: 5,
-                        color: lineColor2,
-                      ),
-                    ),
-                    Expanded(
-                      child: Column(
-                        children: [
-                          Text('Home'),
-                          Container(
-                            alignment: Alignment.center,
-                            child: Text(
-                              '3',
-                              style: TextStyle(color: Colors.white),
-                            ),
-                            decoration: BoxDecoration(
-                                color: circleColor3, shape: BoxShape.circle),
+                  ],
+                )),
+                Expanded(
+                  child: Column(
+                    children: [
+                      Text('Home'),
+                      Expanded(
+                        child: Container(
+                          alignment: Alignment.center,
+                          child: Text(
+                            movingValue,
+                            style: TextStyle(color: Colors.white),
                           ),
-                        ],
-                      ),
-                    )
-                    /*Padding(
-            padding: EdgeInsets.only(left: 12),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisSize: MainAxisSize.max,
-              children: [
-                Text('data'),
-                CustomPaint(
-                  painter: ShapeCircle1(
-                    circleColor1: Colors.grey,
+                          decoration: BoxDecoration(
+                              color: circleColor2, shape: BoxShape.circle),
+                        ),
+                      )
+                    ],
                   ),
                 ),
-              ],
-            ),
-          ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text('data1'),
-              CustomPaint(
-                  painter: ShapeLine1(
-                lineColor1: Colors.grey,
-              )),
-            ],
-        ),*/
+                Expanded(
+                    child: Column(
+                  children: [
+                    Text(""),
+                    Expanded(
+                      child: Divider(
+                        thickness: 5,
+                        color: lineColor1,
+                      ),
+                    ),
                   ],
-                ),
-              ))),
+                )),
+                Expanded(
+                  child: Column(
+                    children: [
+                      Text('School'),
+                      Expanded(
+                        child: Container(
+                          alignment: Alignment.center,
+                          child: Text(
+                            schoolValue,
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          decoration: BoxDecoration(
+                              color: circleColor3, shape: BoxShape.circle),
+                        ),
+                      ),
+                    ],
+                  ),
+                )
+                /*Padding(
+          padding: EdgeInsets.only(left: 12),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisSize: MainAxisSize.max,
+            children: [
+            Text('data'),
+            CustomPaint(
+              painter: ShapeCircle1(
+                circleColor1: Colors.grey,
+              ),
+            ),
+            ],
+          ),
+        ),
+        Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text('data1'),
+            CustomPaint(
+              painter: ShapeLine1(
+            lineColor1: Colors.grey,
+            )),
+          ],
+          ),*/
+              ],
+            )),
+      ),
     );
   }
 
@@ -150,6 +169,11 @@ class _LandingPageState extends State<LandingPage> {
     // TODO: implement initState
     circleColor1 =
         lineColor1 = circleColor2 = lineColor2 = circleColor3 = Colors.grey;
+    homeValue = '1';
+    movingValue = '2';
+    schoolValue = '3';
+
+    setState(() {});
 
     super.initState();
   }
@@ -168,6 +192,10 @@ void choiceAction(String choice, BuildContext context) async {
 
     case Menu.settings_accounts_and_permissions:
       Navigation().navigater(context, Users());
+      break;
+
+    case Menu.settings_transactions:
+      Navigation().navigater(context, Transactions());
       break;
 
     case Menu.settings_signout:

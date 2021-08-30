@@ -15,6 +15,7 @@ class Menu {
   static const String settings_admin = "Admin";
   static const String settings_signout = "Sign Out";
   static const String settings_notification = "notifications";
+  static const String settings_transactions = "transactions";
 
   static const List<String> adminMenuChoice = <String>[
     Profile,
@@ -22,6 +23,7 @@ class Menu {
     settings_grades_and_classes,
     settings_accounts_and_permissions,
     settings_preferences,
+    settings_transactions,
     settings_dashboards,
     settings_signout,
   ];
