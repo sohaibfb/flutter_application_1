@@ -18,10 +18,7 @@ class Transactions extends StatefulWidget {
 
 class _NameState extends State<Transactions> {
   Future<List<Student>> _studentList;
-  var date1=DateTime.now();
-  date1.
-  
-
+  var date1 = DateTime.now();
   Future<List<Student>> getdata() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String url = ("https://sktest87.000webhostapp.com/loadstudentsinfo.php");
@@ -55,7 +52,7 @@ class _NameState extends State<Transactions> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text(DateTime.parse('2012-02-27').),
+          title: Text('transactions'),
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () async {
