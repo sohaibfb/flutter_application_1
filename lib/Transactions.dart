@@ -8,6 +8,7 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 import 'package:uuid/uuid.dart';
+import 'package:intl/intl.dart';
 
 class Transactions extends StatefulWidget {
   Transactions({Key key}) : super(key: key);
@@ -18,7 +19,8 @@ class Transactions extends StatefulWidget {
 
 class _NameState extends State<Transactions> {
   Future<List<Student>> _studentList;
-  var date1 = DateTime.now();
+
+  String date = DateFormat('yyyyMMdd').format(DateTime.now());
   Future<List<Student>> getdata() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String url = ("https://sktest87.000webhostapp.com/loadstudentsinfo.php");
@@ -52,7 +54,7 @@ class _NameState extends State<Transactions> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text('transactions'),
+          title: Text(date),
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () async {
@@ -65,64 +67,80 @@ class _NameState extends State<Transactions> {
           },
           child: Icon(Icons.add),
         ),
-        body: FutureBuilder<List<Student>>(
-            future: _studentList,
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                List<Student> studentData = snapshot.data;
-                return ListView.builder(
-                    itemCount: studentData.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return GestureDetector(
-                        onTap: () => itemSelected(
-                            studentData[index].firstName,
-                            studentData[index].lastName,
-                            studentData[index].nationalId,
-                            studentData[index].grade,
-                            studentData[index].studentClass,
-                            context),
-                        child: Container(
-                          child: Card(
-                            child: Padding(
-                              padding: const EdgeInsets.all(16.0),
-                              child: Row(
-                                textDirection: TextDirection.ltr,
-                                children: [
-                                  Image(
-                                      height: 100,
-                                      image: AssetImage('assets/pic1.png')),
-                                  Column(
-                                    children: [
-                                      Text(studentData[index].firstName +
-                                          " " +
-                                          studentData[index].lastName),
-                                      Text(" "),
-                                      Text(studentData[index].nationalId),
-                                    ],
+        body: Column(
+          children: [
+            Container(
+                height: 50,
+                width: double.maxFinite,
+                color: Colors.blue,
+                child: UnconstrainedBox(child: Text(date))),
+            Container(
+              child: Expanded(
+                child: FutureBuilder<List<Student>>(
+                    future: _studentList,
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        List<Student> studentData = snapshot.data;
+                        return ListView.builder(
+                            itemCount: studentData.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              return GestureDetector(
+                                onTap: () => itemSelected(
+                                    studentData[index].firstName,
+                                    studentData[index].lastName,
+                                    studentData[index].nationalId,
+                                    studentData[index].grade,
+                                    studentData[index].studentClass,
+                                    context),
+                                child: Container(
+                                  child: Card(
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(16.0),
+                                      child: Row(
+                                        // textDirection: TextDirection.LTR,
+                                        children: [
+                                          Image(
+                                              height: 100,
+                                              image: AssetImage(
+                                                  'assets/pic1.png')),
+                                          Column(
+                                            children: [
+                                              Text(studentData[index]
+                                                      .firstName +
+                                                  " " +
+                                                  studentData[index].lastName),
+                                              Text(" "),
+                                              Text(studentData[index]
+                                                  .nationalId),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ),
                                   ),
-                                ],
+                                ),
+                              );
+                            });
+                      } else if (snapshot.hasError) {
+                        if (snapshot.data == null) {
+                          return Container(
+                            child: Center(
+                              child: Text(
+                                "No Students Defined Yet",
+                                style: TextStyle(fontWeight: FontWeight.bold),
                               ),
                             ),
-                          ),
-                        ),
-                      );
-                    });
-              } else if (snapshot.hasError) {
-                if (snapshot.data == null) {
-                  return Container(
-                    child: Center(
-                      child: Text(
-                        "No Students Defined Yet",
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                  );
-                }
+                          );
+                        }
 
-                return Text("${snapshot.error}");
-              }
-              return CircularProgressIndicator();
-            }));
+                        return Text("${snapshot.error}");
+                      }
+                      return CircularProgressIndicator();
+                    }),
+              ),
+            ),
+          ],
+        ));
   }
 
   @override
