@@ -27,7 +27,8 @@ class ApproveParentPendingRequest extends StatefulWidget {
 class _NameState extends State<ApproveParentPendingRequest> {
   Future<String> updatedata() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String url = ("https://sktest87.000webhostapp.com/updatestudentstatus.php");
+    String url =
+        ("https://sktest87.000webhostapp.com/approveparentpendingrequest.php");
     var data = {
       "schoolid": widget.schoolId,
       "username": prefs.get('username'),

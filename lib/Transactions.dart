@@ -3,7 +3,7 @@ import 'package:flutter_application_1/AddStudent.dart';
 import 'dart:async';
 import 'package:flutter_application_1/Navigation.dart';
 import 'package:flutter_application_1/Student.dart';
-import 'package:flutter_application_1/StudentProfile.dart';
+import 'package:flutter_application_1/UpdateStudentStatus.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
@@ -85,13 +85,23 @@ class _NameState extends State<Transactions> {
                             itemCount: studentData.length,
                             itemBuilder: (BuildContext context, int index) {
                               return GestureDetector(
-                                onTap: () => itemSelected(
-                                    studentData[index].firstName,
-                                    studentData[index].lastName,
-                                    studentData[index].nationalId,
-                                    studentData[index].grade,
-                                    studentData[index].studentClass,
-                                    context),
+                                onTap: () async {
+                                  String status = await itemSelected(
+                                      studentData[index].schoolId,
+                                      studentData[index].id,
+                                      studentData[index].nationalId,
+                                      studentData[index].firstName,
+                                      studentData[index].lastName,
+                                      studentData[index].grade,
+                                      studentData[index].studentClass,
+                                      context);
+
+                                  if (status == 'success') {
+                                    setState(() {
+                                      _studentList = getdata();
+                                    });
+                                  }
+                                },
                                 child: Container(
                                   child: Card(
                                     child: Padding(
@@ -112,6 +122,11 @@ class _NameState extends State<Transactions> {
                                               Text(" "),
                                               Text(studentData[index]
                                                   .nationalId),
+                                              Text(
+                                                'Status',
+                                                style: TextStyle(
+                                                    color: Colors.blue),
+                                              )
                                             ],
                                           ),
                                         ],
@@ -152,18 +167,28 @@ class _NameState extends State<Transactions> {
   }
 }
 
-void itemSelected(String firstName, String lastName, String nationalId,
-    String grade, String studentClass, BuildContext context) {
+itemSelected(
+    String schoolId,
+    String id,
+    String nationalId,
+    String firstName,
+    String lastName,
+    String grade,
+    String studentClass,
+    BuildContext context) async {
   // Navigator.push(
   //   context,MaterialPageRoute(
   //     builder: (context) =>
   //       StudentProfile(firstName: firstName, lastName: lastName)));
-  Navigator.of(context).push(MaterialPageRoute(
-      builder: (context) => StudentProfile(
+  String status = await Navigator.of(context).push(MaterialPageRoute(
+      builder: (context) => UpdateStudentStatus(
+            schoolId: schoolId,
+            id: id,
+            nationalId: nationalId,
             firstName: firstName,
             lastName: lastName,
-            nationalId: nationalId,
             grade: grade,
             studentClass: studentClass,
           )));
+  return status;
 }
