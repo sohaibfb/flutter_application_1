@@ -19,6 +19,7 @@ class Transactions extends StatefulWidget {
 
 class _NameState extends State<Transactions> {
   Future<List<Student>> _studentList;
+  TextEditingController dateText = new TextEditingController();
 
   String date = DateFormat('yyyyMMdd').format(DateTime.now());
   Future<List<Student>> getdata() async {
@@ -70,10 +71,14 @@ class _NameState extends State<Transactions> {
         body: Column(
           children: [
             Container(
+                alignment: Alignment.topRight,
                 height: 50,
                 width: double.maxFinite,
                 color: Colors.blue,
-                child: UnconstrainedBox(child: Text(date))),
+                child: TextField(
+                  readOnly: true,
+                  controller: dateText,
+                )), //Text(date)),
             Container(
               child: Expanded(
                 child: FutureBuilder<List<Student>>(
@@ -162,6 +167,7 @@ class _NameState extends State<Transactions> {
   void initState() {
     super.initState();
     setState(() {
+      dateText.text = date.toString();
       _studentList = getdata();
     });
   }
