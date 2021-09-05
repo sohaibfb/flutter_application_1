@@ -71,13 +71,17 @@ class _NameState extends State<Transactions> {
         body: Column(
           children: [
             Container(
-                alignment: Alignment.topRight,
                 height: 50,
                 width: double.maxFinite,
                 color: Colors.blue,
                 child: TextField(
+                  decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(5))),
                   readOnly: true,
                   controller: dateText,
+                  style: TextStyle(backgroundColor: Colors.white),
+                  textAlign: TextAlign.center,
                 )), //Text(date)),
             Container(
               child: Expanded(

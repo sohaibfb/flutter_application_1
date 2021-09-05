@@ -7,7 +7,13 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'LoadingPageAdmin.dart';
 import 'ParentPendingRequest.dart';
 
-class AccountHomepage extends StatelessWidget {
+class AccountHomepage extends StatefulWidget {
+  @override
+  _AccountHomepageState createState() => _AccountHomepageState();
+}
+
+class _AccountHomepageState extends State<AccountHomepage> {
+  int _index = 0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,8 +34,18 @@ class AccountHomepage extends StatelessWidget {
         ],
       ),
       body: Center(
-        child: Text('Hello world'),
-      ),
+          child: Column(
+        children: [
+          Text('Hello world'),
+          Stepper(currentStep: _index, steps: [
+            Step(
+              title: Text('step1'),
+              content: Text('data'),
+            ),
+            Step(title: Text('step2'), content: Text('hello step2'))
+          ])
+        ],
+      )),
     );
   }
 }
