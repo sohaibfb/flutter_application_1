@@ -55,7 +55,8 @@ class _NameState extends State<Transactions> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text(date),
+          centerTitle: true,
+          title: Text('Transactions'),
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () async {
@@ -71,16 +72,22 @@ class _NameState extends State<Transactions> {
         body: Column(
           children: [
             Container(
-                height: 50,
-                width: double.maxFinite,
+                margin: EdgeInsets.only(top: 30),
+                padding: EdgeInsets.symmetric(
+                  horizontal: 30 * MediaQuery.of(context).size.width / 100,
+                ),
+                height: 40,
+                // width: double.maxFinite,
                 color: Colors.blue,
                 child: TextField(
+                  scrollPadding: EdgeInsets.all(0),
                   decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(5))),
+                    fillColor: Colors.white,
+                    filled: true,
+                  ),
                   readOnly: true,
                   controller: dateText,
-                  style: TextStyle(backgroundColor: Colors.white),
+                  style: TextStyle(decorationColor: Colors.white),
                   textAlign: TextAlign.center,
                 )), //Text(date)),
             Container(
