@@ -58,17 +58,6 @@ class _NameState extends State<Transactions> {
           centerTitle: true,
           title: Text('Transactions'),
         ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () async {
-            String status = await Navigation().navigater(context, AddStudent());
-            if (status == 'success') {
-              setState(() {
-                _studentList = getdata();
-              });
-            }
-          },
-          child: Icon(Icons.add),
-        ),
         body: Column(
           children: [
             Container(
@@ -76,15 +65,16 @@ class _NameState extends State<Transactions> {
                 padding: EdgeInsets.symmetric(
                   horizontal: 30 * MediaQuery.of(context).size.width / 100,
                 ),
-                height: 40,
+                height: 60,
                 // width: double.maxFinite,
                 color: Colors.blue,
                 child: TextField(
-                  scrollPadding: EdgeInsets.all(0),
                   decoration: InputDecoration(
-                    fillColor: Colors.white,
-                    filled: true,
-                  ),
+                      fillColor: Colors.white,
+                      filled: true,
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(20)),
+                          borderSide: BorderSide(width: 30))),
                   readOnly: true,
                   controller: dateText,
                   style: TextStyle(decorationColor: Colors.white),
