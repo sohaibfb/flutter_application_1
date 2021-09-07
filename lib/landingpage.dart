@@ -1,5 +1,5 @@
 import 'dart:ui';
-
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_application_1/Grades.dart';
@@ -10,6 +10,7 @@ import 'package:flutter_application_1/Menu.dart';
 import 'package:flutter_application_1/Navigation.dart';
 import 'package:flutter_application_1/transactions.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
 //import 'package:flutter_shapes/flutter_shapes.dart';
 //import 'package:flutter_application_1/ShapeCircle1.dart';
 //import 'package:flutter_application_1/ShapeCircle2.dart';
@@ -25,6 +26,69 @@ class LandingPage extends StatefulWidget {
 class _LandingPageState extends State<LandingPage> {
   Color circleColor1, lineColor1, circleColor2, lineColor2, circleColor3;
   String homeValue, movingValue, schoolValue;
+
+  Future<String> gethomecount() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String url = ("https://sktest87.000webhostapp.com/gethomecount.php");
+    var data = {
+      "schoolid": prefs.get('schoolid'),
+    };
+
+    var response = await http.post(Uri.parse(url), body: data);
+    String homeCount;
+    if (response.statusCode == 200) {
+      print(prefs.get('schoolid'));
+      print("data loaded");
+
+      print(response.body);
+
+      return response.body.trim();
+    } else {
+      throw Exception("failed to load");
+    }
+  }
+
+  Future<String> getmovingcount() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String url = ("https://sktest87.000webhostapp.com/getmovingcount.php");
+    var data = {
+      "schoolid": prefs.get('schoolid'),
+    };
+
+    var response = await http.post(Uri.parse(url), body: data);
+    String movingCount;
+    if (response.statusCode == 200) {
+      print(prefs.get('schoolid'));
+      print("data loaded");
+
+      print(response.body);
+
+      return movingCount;
+    } else {
+      throw Exception("failed to load");
+    }
+  }
+
+  Future<String> getschoolcount() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String url = ("https://sktest87.000webhostapp.com/getschoolcount.php");
+    var data = {
+      "schoolid": prefs.get('schoolid'),
+    };
+
+    var response = await http.post(Uri.parse(url), body: data);
+    String schoolCount;
+    if (response.statusCode == 200) {
+      print(prefs.get('schoolid'));
+      print("data loaded");
+
+      print(response.body);
+
+      return schoolCount;
+    } else {
+      throw Exception("failed to load");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -172,6 +236,9 @@ class _LandingPageState extends State<LandingPage> {
     homeValue = '1';
     movingValue = '2';
     schoolValue = '3';
+    gethomecount();
+    getmovingcount();
+    getschoolcount();
 
     setState(() {});
 
