@@ -38,16 +38,6 @@ class _NameState extends State<UpdateStudentStatus> {
       print('date: ' + DateTime.now().toString());
     } else {
       moveType = '2';
-      print('movetype: ' +
-          moveType +
-          '' +
-          widget.schoolId +
-          '' +
-          widget.id +
-          '' +
-          moveType +
-          ' ' +
-          DateTime.now().toString());
     }
     String url = ("https://sktest87.000webhostapp.com/updatestudentstatus.php");
     var data = {

@@ -25,13 +25,15 @@ class LandingPage extends StatefulWidget {
 
 class _LandingPageState extends State<LandingPage> {
   Color circleColor1, lineColor1, circleColor2, lineColor2, circleColor3;
-  String homeValue, movingValue, schoolValue;
+  String homeCount, movingCount, schoolCount;
+  Future<String> countData;
 
-  Future<String> gethomecount() async {
+  Future<String> gethomecount(String countType) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String url = ("https://sktest87.000webhostapp.com/gethomecount.php");
     var data = {
       "schoolid": prefs.get('schoolid'),
+      "counttype": countType,
     };
 
     var response = await http.post(Uri.parse(url), body: data);
@@ -125,7 +127,7 @@ class _LandingPageState extends State<LandingPage> {
                         child: Container(
                           alignment: Alignment.center,
                           child: Text(
-                            homeValue,
+                            homeCount,
                             style: TextStyle(color: Colors.white),
                           ),
                           decoration: BoxDecoration(
@@ -155,7 +157,7 @@ class _LandingPageState extends State<LandingPage> {
                         child: Container(
                           alignment: Alignment.center,
                           child: Text(
-                            movingValue,
+                            movingCount,
                             style: TextStyle(color: Colors.white),
                           ),
                           decoration: BoxDecoration(
@@ -185,7 +187,7 @@ class _LandingPageState extends State<LandingPage> {
                         child: Container(
                           alignment: Alignment.center,
                           child: Text(
-                            schoolValue,
+                            schoolCount,
                             style: TextStyle(color: Colors.white),
                           ),
                           decoration: BoxDecoration(
@@ -233,12 +235,18 @@ class _LandingPageState extends State<LandingPage> {
     // TODO: implement initState
     circleColor1 =
         lineColor1 = circleColor2 = lineColor2 = circleColor3 = Colors.grey;
-    homeValue = '1';
-    movingValue = '2';
-    schoolValue = '3';
-    gethomecount();
-    getmovingcount();
-    getschoolcount();
+    // homeValue = '1';
+    //movingValue = '2';
+    //schoolValue = '3';
+    countData = gethomecount('1');
+    countData.then((value) => homeCount = value);
+    countData = gethomecount('2');
+    countData.then((value) => movingCount = value);
+    countData = gethomecount('3');
+    countData.then((value) => schoolCount = value);
+
+    //getmovingcount();
+    //getschoolcount();
 
     setState(() {});
 
