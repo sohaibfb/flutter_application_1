@@ -233,22 +233,23 @@ class _LandingPageState extends State<LandingPage> {
   @override
   void initState() {
     // TODO: implement initState
-    circleColor1 =
-        lineColor1 = circleColor2 = lineColor2 = circleColor3 = Colors.grey;
-    // homeValue = '1';
-    //movingValue = '2';
-    //schoolValue = '3';
-    countData = gethomecount('1');
-    countData.then((value) => homeCount = value);
-    countData = gethomecount('2');
-    countData.then((value) => movingCount = value);
-    countData = gethomecount('3');
-    countData.then((value) => schoolCount = value);
-
+    homeCount = '1';
+    movingCount = '2';
+    schoolCount = '3';
     //getmovingcount();
     //getschoolcount();
 
-    setState(() {});
+    setState(() {
+      circleColor1 =
+          lineColor1 = circleColor2 = lineColor2 = circleColor3 = Colors.grey;
+
+      countData = gethomecount('1');
+      countData.then((value) => homeCount = value);
+      countData = gethomecount('2');
+      countData.then((value) => movingCount = value);
+      countData = gethomecount('3');
+      countData.then((value) => schoolCount = value);
+    });
 
     super.initState();
   }
