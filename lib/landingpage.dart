@@ -127,8 +127,10 @@ class _LandingPageState extends State<LandingPage> {
                         child: Container(
                           alignment: Alignment.center,
                           child: Text(
-                            homeCount,
-                            style: TextStyle(color: Colors.white),
+                            homeCount != null ? homeCount : '',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold),
                           ),
                           decoration: BoxDecoration(
                               color: circleColor1, shape: BoxShape.circle),
@@ -152,13 +154,15 @@ class _LandingPageState extends State<LandingPage> {
                 Expanded(
                   child: Column(
                     children: [
-                      Text('Home'),
+                      Text('Moving'),
                       Expanded(
                         child: Container(
                           alignment: Alignment.center,
                           child: Text(
-                            movingCount,
-                            style: TextStyle(color: Colors.white),
+                            movingCount != null ? movingCount : '',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold),
                           ),
                           decoration: BoxDecoration(
                               color: circleColor2, shape: BoxShape.circle),
@@ -187,8 +191,10 @@ class _LandingPageState extends State<LandingPage> {
                         child: Container(
                           alignment: Alignment.center,
                           child: Text(
-                            schoolCount,
-                            style: TextStyle(color: Colors.white),
+                            schoolCount != null ? schoolCount : '',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold),
                           ),
                           decoration: BoxDecoration(
                               color: circleColor3, shape: BoxShape.circle),
@@ -233,25 +239,35 @@ class _LandingPageState extends State<LandingPage> {
   @override
   void initState() {
     // TODO: implement initState
-    homeCount = '1';
-    movingCount = '2';
-    schoolCount = '3';
+    super.initState();
+    //homeCount = '1';
+    //movingCount = '2';
+    // schoolCount = '3';
     //getmovingcount();
     //getschoolcount();
+    circleColor1 =
+        lineColor1 = circleColor2 = lineColor2 = circleColor3 = Colors.grey;
 
-    setState(() {
-      circleColor1 =
-          lineColor1 = circleColor2 = lineColor2 = circleColor3 = Colors.grey;
-
-      countData = gethomecount('1');
-      countData.then((value) => homeCount = value);
-      countData = gethomecount('2');
-      countData.then((value) => movingCount = value);
-      countData = gethomecount('3');
-      countData.then((value) => schoolCount = value);
+    countData = gethomecount('1');
+    countData.then((value) {
+      setState(() {
+        circleColor1 = Colors.green[300];
+        homeCount = value;
+      });
+    });
+    countData = gethomecount('2');
+    countData.then((value) {
+      setState(() {
+        movingCount = value;
+      });
     });
 
-    super.initState();
+    countData = gethomecount('3');
+    countData.then((value) {
+      setState(() {
+        schoolCount = value;
+      });
+    });
   }
 }
 
