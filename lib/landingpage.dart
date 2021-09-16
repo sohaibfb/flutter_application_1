@@ -247,7 +247,10 @@ class _LandingPageState extends State<LandingPage> {
     //getschoolcount();
     circleColor1 =
         lineColor1 = circleColor2 = lineColor2 = circleColor3 = Colors.grey;
+    loaddata();
+  }
 
+  void loaddata() {
     countData = gethomecount('1');
     countData.then((value) {
       setState(() {
