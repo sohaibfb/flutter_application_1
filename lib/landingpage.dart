@@ -29,7 +29,31 @@ class LandingPage extends StatefulWidget {
 class _LandingPageState extends State<LandingPage> {
   Color circleColor1, lineColor1, circleColor2, lineColor2, circleColor3;
   String homeCount, movingCount, schoolCount;
+  Stream countData1;
   Future<String> countData;
+
+  Stream<String> foo(String countType) async* {
+    SharedPreferences prefs = await GetSharedPrefs().getsharedpreferences();
+    var data = {
+      "schoolid": prefs.get('schoolid'),
+      "counttype": countType,
+    };
+    String url = ("https://sktest87.000webhostapp.com/gethomecount.php");
+    var response;
+    for (int i = 0; i < 42; i++) {
+      response = await http.post(Uri.parse(url), body: data);
+      if (response.statusCode == 200) {
+        print(prefs.get('schoolid'));
+        print("data loaded");
+
+        print(response.body);
+
+        yield response.body.trim();
+      } else {
+        throw Exception("failed to load");
+      }
+    }
+  }
 
   Future<String> gethomecount(String countType) async {
     SharedPreferences prefs = await GetSharedPrefs().getsharedpreferences();
@@ -130,11 +154,34 @@ class _LandingPageState extends State<LandingPage> {
                           Expanded(
                             child: Container(
                               alignment: Alignment.center,
-                              child: Text(
-                                homeCount != null ? homeCount : '',
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold),
+                              child: StreamBuilder(
+                                builder: (context, snapshot) {
+                                  Widget child;
+                                  switch (snapshot.connectionState) {
+                                    case ConnectionState.none:
+                                      child = Text('hello');
+                                      break;
+
+                                    case ConnectionState.waiting:
+                                      child = CircularProgressIndicator();
+                                      break;
+
+                                    case ConnectionState.active:
+                                      child = Text(
+                                        snapshot.data,
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold),
+                                      );
+                                      break;
+
+                                    case ConnectionState.done:
+                                      child = Text('Done');
+                                      break;
+                                  }
+                                  return child;
+                                },
+                                stream: countData1,
                               ),
                               decoration: BoxDecoration(
                                   color: circleColor1, shape: BoxShape.circle),
@@ -255,13 +302,14 @@ class _LandingPageState extends State<LandingPage> {
   }
 
   void loaddata() {
-    countData = gethomecount('1');
-    countData.then((value) {
-      setState(() {
-        circleColor1 = Colors.green[300];
-        homeCount = value;
-      });
+    countData1 = foo('1');
+
+    //countData.then((value) {
+    setState(() {
+      circleColor1 = Colors.green[300];
+      homeCount = toString();
     });
+    // });
     countData = gethomecount('2');
     countData.then((value) {
       setState(() {
