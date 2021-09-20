@@ -2,6 +2,8 @@ import 'dart:ui';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_application_1/DataModel.dart';
+import 'package:flutter_application_1/GetSharedPrefs.dart';
 import 'package:flutter_application_1/Grades.dart';
 import 'package:flutter_application_1/SignInAdmin.dart';
 import 'package:flutter_application_1/Users.dart';
@@ -11,6 +13,7 @@ import 'package:flutter_application_1/Navigation.dart';
 import 'package:flutter_application_1/transactions.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 //import 'package:flutter_shapes/flutter_shapes.dart';
 //import 'package:flutter_application_1/ShapeCircle1.dart';
 //import 'package:flutter_application_1/ShapeCircle2.dart';
@@ -29,7 +32,7 @@ class _LandingPageState extends State<LandingPage> {
   Future<String> countData;
 
   Future<String> gethomecount(String countType) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
+    SharedPreferences prefs = await GetSharedPrefs().getsharedpreferences();
     String url = ("https://sktest87.000webhostapp.com/gethomecount.php");
     var data = {
       "schoolid": prefs.get('schoolid'),
@@ -95,115 +98,116 @@ class _LandingPageState extends State<LandingPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("LandingPage"),
-        actions: <Widget>[
-          IconButton(icon: Icon(Icons.search), onPressed: () {}),
-          // IconButton(
-          //   icon: Icon(Icons.notification_important), onPressed: () {}),
-          PopupMenuButton<String>(
-              onSelected: (choice) => choiceAction(choice, context),
-              itemBuilder: (BuildContext context) {
-                return Menu.adminMenuChoice.map((String choice) {
-                  return PopupMenuItem<String>(
-                    child: Text(choice),
-                    value: choice,
-                  );
-                }).toList();
-              })
-        ],
-      ),
-      body: Center(
-        child: Container(
-            margin: EdgeInsets.symmetric(vertical: 200),
-            padding: EdgeInsets.only(left: 8.0, right: 8.0),
-            child: Row(
-              children: [
-                Expanded(
-                  child: Column(
-                    children: [
-                      Text('Home'),
-                      Expanded(
-                        child: Container(
-                          alignment: Alignment.center,
-                          child: Text(
-                            homeCount != null ? homeCount : '',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold),
-                          ),
-                          decoration: BoxDecoration(
-                              color: circleColor1, shape: BoxShape.circle),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Expanded(
-                    child: Column(
+        appBar: AppBar(
+          title: Text("LandingPage"),
+          actions: <Widget>[
+            IconButton(icon: Icon(Icons.search), onPressed: () {}),
+            // IconButton(
+            //   icon: Icon(Icons.notification_important), onPressed: () {}),
+            PopupMenuButton<String>(
+                onSelected: (choice) => choiceAction(choice, context),
+                itemBuilder: (BuildContext context) {
+                  return Menu.adminMenuChoice.map((String choice) {
+                    return PopupMenuItem<String>(
+                      child: Text(choice),
+                      value: choice,
+                    );
+                  }).toList();
+                })
+          ],
+        ),
+        body: Consumer<DataModel>(
+          builder: (context, value, child) => Center(
+            child: Container(
+                margin: EdgeInsets.symmetric(vertical: 200),
+                padding: EdgeInsets.only(left: 8.0, right: 8.0),
+                child: Row(
                   children: [
-                    Text(""),
                     Expanded(
-                      child: Divider(
-                        thickness: 5,
-                        color: lineColor1,
+                      child: Column(
+                        children: [
+                          Text('Home'),
+                          Expanded(
+                            child: Container(
+                              alignment: Alignment.center,
+                              child: Text(
+                                homeCount != null ? homeCount : '',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              decoration: BoxDecoration(
+                                  color: circleColor1, shape: BoxShape.circle),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                  ],
-                )),
-                Expanded(
-                  child: Column(
-                    children: [
-                      Text('Moving'),
-                      Expanded(
-                        child: Container(
-                          alignment: Alignment.center,
-                          child: Text(
-                            movingCount != null ? movingCount : '',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold),
-                          ),
-                          decoration: BoxDecoration(
-                              color: circleColor2, shape: BoxShape.circle),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-                Expanded(
-                    child: Column(
-                  children: [
-                    Text(""),
                     Expanded(
-                      child: Divider(
-                        thickness: 5,
-                        color: lineColor1,
+                        child: Column(
+                      children: [
+                        Text(""),
+                        Expanded(
+                          child: Divider(
+                            thickness: 5,
+                            color: lineColor1,
+                          ),
+                        ),
+                      ],
+                    )),
+                    Expanded(
+                      child: Column(
+                        children: [
+                          Text('Moving'),
+                          Expanded(
+                            child: Container(
+                              alignment: Alignment.center,
+                              child: Text(
+                                movingCount != null ? movingCount : '',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              decoration: BoxDecoration(
+                                  color: circleColor2, shape: BoxShape.circle),
+                            ),
+                          )
+                        ],
                       ),
                     ),
-                  ],
-                )),
-                Expanded(
-                  child: Column(
-                    children: [
-                      Text('School'),
-                      Expanded(
-                        child: Container(
-                          alignment: Alignment.center,
-                          child: Text(
-                            schoolCount != null ? schoolCount : '',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold),
+                    Expanded(
+                        child: Column(
+                      children: [
+                        Text(""),
+                        Expanded(
+                          child: Divider(
+                            thickness: 5,
+                            color: lineColor1,
                           ),
-                          decoration: BoxDecoration(
-                              color: circleColor3, shape: BoxShape.circle),
                         ),
+                      ],
+                    )),
+                    Expanded(
+                      child: Column(
+                        children: [
+                          Text('School'),
+                          Expanded(
+                            child: Container(
+                              alignment: Alignment.center,
+                              child: Text(
+                                schoolCount != null ? schoolCount : '',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              decoration: BoxDecoration(
+                                  color: circleColor3, shape: BoxShape.circle),
+                            ),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
-                )
-                /*Padding(
+                    )
+                    /*Padding(
           padding: EdgeInsets.only(left: 12),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -230,10 +234,10 @@ class _LandingPageState extends State<LandingPage> {
             )),
           ],
           ),*/
-              ],
-            )),
-      ),
-    );
+                  ],
+                )),
+          ),
+        ));
   }
 
   @override
