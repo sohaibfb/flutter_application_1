@@ -28,11 +28,11 @@ class LandingPage extends StatefulWidget {
 
 class _LandingPageState extends State<LandingPage> {
   Color circleColor1, lineColor1, circleColor2, lineColor2, circleColor3;
-  String homeCount, movingCount, schoolCount;
+  Stream homeCount, movingCount, schoolCount;
   Stream countData1;
   Future<String> countData;
 
-  Stream<String> foo(String countType) async* {
+  Stream<String> getcount(String countType) async* {
     SharedPreferences prefs = await GetSharedPrefs().getsharedpreferences();
     var data = {
       "schoolid": prefs.get('schoolid'),
@@ -40,7 +40,7 @@ class _LandingPageState extends State<LandingPage> {
     };
     String url = ("https://sktest87.000webhostapp.com/gethomecount.php");
     var response;
-    for (int i = 0; i < 42; i++) {
+    while (true) {
       response = await http.post(Uri.parse(url), body: data);
       if (response.statusCode == 200) {
         print(prefs.get('schoolid'));
@@ -55,206 +55,186 @@ class _LandingPageState extends State<LandingPage> {
     }
   }
 
-  Future<String> gethomecount(String countType) async {
-    SharedPreferences prefs = await GetSharedPrefs().getsharedpreferences();
-    String url = ("https://sktest87.000webhostapp.com/gethomecount.php");
-    var data = {
-      "schoolid": prefs.get('schoolid'),
-      "counttype": countType,
-    };
-
-    var response = await http.post(Uri.parse(url), body: data);
-    String homeCount;
-    if (response.statusCode == 200) {
-      print(prefs.get('schoolid'));
-      print("data loaded");
-
-      print(response.body);
-
-      return response.body.trim();
-    } else {
-      throw Exception("failed to load");
-    }
-  }
-
-  Future<String> getmovingcount() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String url = ("https://sktest87.000webhostapp.com/getmovingcount.php");
-    var data = {
-      "schoolid": prefs.get('schoolid'),
-    };
-
-    var response = await http.post(Uri.parse(url), body: data);
-    String movingCount;
-    if (response.statusCode == 200) {
-      print(prefs.get('schoolid'));
-      print("data loaded");
-
-      print(response.body);
-
-      return movingCount;
-    } else {
-      throw Exception("failed to load");
-    }
-  }
-
-  Future<String> getschoolcount() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String url = ("https://sktest87.000webhostapp.com/getschoolcount.php");
-    var data = {
-      "schoolid": prefs.get('schoolid'),
-    };
-
-    var response = await http.post(Uri.parse(url), body: data);
-    String schoolCount;
-    if (response.statusCode == 200) {
-      print(prefs.get('schoolid'));
-      print("data loaded");
-
-      print(response.body);
-
-      return schoolCount;
-    } else {
-      throw Exception("failed to load");
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text("LandingPage"),
-          actions: <Widget>[
-            IconButton(icon: Icon(Icons.search), onPressed: () {}),
-            // IconButton(
-            //   icon: Icon(Icons.notification_important), onPressed: () {}),
-            PopupMenuButton<String>(
-                onSelected: (choice) => choiceAction(choice, context),
-                itemBuilder: (BuildContext context) {
-                  return Menu.adminMenuChoice.map((String choice) {
-                    return PopupMenuItem<String>(
-                      child: Text(choice),
-                      value: choice,
-                    );
-                  }).toList();
-                })
-          ],
-        ),
-        body: Consumer<DataModel>(
-          builder: (context, value, child) => Center(
-            child: Container(
-                margin: EdgeInsets.symmetric(vertical: 200),
-                padding: EdgeInsets.only(left: 8.0, right: 8.0),
-                child: Row(
+      appBar: AppBar(
+        title: Text("LandingPage"),
+        actions: <Widget>[
+          IconButton(icon: Icon(Icons.search), onPressed: () {}),
+          // IconButton(
+          //   icon: Icon(Icons.notification_important), onPressed: () {}),
+          PopupMenuButton<String>(
+              onSelected: (choice) => choiceAction(choice, context),
+              itemBuilder: (BuildContext context) {
+                return Menu.adminMenuChoice.map((String choice) {
+                  return PopupMenuItem<String>(
+                    child: Text(choice),
+                    value: choice,
+                  );
+                }).toList();
+              })
+        ],
+      ),
+      body: Center(
+        child: Container(
+            margin: EdgeInsets.symmetric(vertical: 200),
+            padding: EdgeInsets.only(left: 8.0, right: 8.0),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Column(
+                    children: [
+                      Text('Home'),
+                      Expanded(
+                        child: Container(
+                          alignment: Alignment.center,
+                          child: StreamBuilder(
+                            builder: (context, snapshot) {
+                              Widget child;
+                              switch (snapshot.connectionState) {
+                                case ConnectionState.none:
+                                  child = Text('hello');
+                                  break;
+
+                                case ConnectionState.waiting:
+                                  child = CircularProgressIndicator();
+                                  break;
+
+                                case ConnectionState.active:
+                                  child = Text(
+                                    snapshot.data,
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold),
+                                  );
+                                  break;
+
+                                case ConnectionState.done:
+                                  child = Text('Done');
+                                  break;
+                              }
+                              return child;
+                            },
+                            stream: homeCount,
+                          ),
+                          decoration: BoxDecoration(
+                              color: circleColor1, shape: BoxShape.circle),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Expanded(
+                    child: Column(
                   children: [
+                    Text(""),
                     Expanded(
-                      child: Column(
-                        children: [
-                          Text('Home'),
-                          Expanded(
-                            child: Container(
-                              alignment: Alignment.center,
-                              child: StreamBuilder(
-                                builder: (context, snapshot) {
-                                  Widget child;
-                                  switch (snapshot.connectionState) {
-                                    case ConnectionState.none:
-                                      child = Text('hello');
-                                      break;
-
-                                    case ConnectionState.waiting:
-                                      child = CircularProgressIndicator();
-                                      break;
-
-                                    case ConnectionState.active:
-                                      child = Text(
-                                        snapshot.data,
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.bold),
-                                      );
-                                      break;
-
-                                    case ConnectionState.done:
-                                      child = Text('Done');
-                                      break;
-                                  }
-                                  return child;
-                                },
-                                stream: countData1,
-                              ),
-                              decoration: BoxDecoration(
-                                  color: circleColor1, shape: BoxShape.circle),
-                            ),
-                          ),
-                        ],
+                      child: Divider(
+                        thickness: 5,
+                        color: lineColor1,
                       ),
                     ),
-                    Expanded(
-                        child: Column(
-                      children: [
-                        Text(""),
-                        Expanded(
-                          child: Divider(
-                            thickness: 5,
-                            color: lineColor1,
-                          ),
+                  ],
+                )),
+                Expanded(
+                  child: Column(
+                    children: [
+                      Text('Moving'),
+                      Expanded(
+                        child: Container(
+                          alignment: Alignment.center,
+                          child: StreamBuilder(
+                              builder: (context, snapshot) {
+                                Widget child;
+                                switch (snapshot.connectionState) {
+                                  case ConnectionState.none:
+                                    child = Text('hello');
+                                    break;
+
+                                  case ConnectionState.waiting:
+                                    child = CircularProgressIndicator();
+                                    break;
+
+                                  case ConnectionState.active:
+                                    child = Text(
+                                      snapshot.data,
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold),
+                                    );
+                                    break;
+
+                                  case ConnectionState.done:
+                                    child = Text('Done');
+                                    break;
+                                }
+                                return child;
+                              },
+                              stream: movingCount),
+                          decoration: BoxDecoration(
+                              color: circleColor2, shape: BoxShape.circle),
                         ),
-                      ],
-                    )),
+                      )
+                    ],
+                  ),
+                ),
+                Expanded(
+                    child: Column(
+                  children: [
+                    Text(""),
                     Expanded(
-                      child: Column(
-                        children: [
-                          Text('Moving'),
-                          Expanded(
-                            child: Container(
-                              alignment: Alignment.center,
-                              child: Text(
-                                movingCount != null ? movingCount : '',
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              decoration: BoxDecoration(
-                                  color: circleColor2, shape: BoxShape.circle),
-                            ),
-                          )
-                        ],
+                      child: Divider(
+                        thickness: 5,
+                        color: lineColor1,
                       ),
                     ),
-                    Expanded(
-                        child: Column(
-                      children: [
-                        Text(""),
-                        Expanded(
-                          child: Divider(
-                            thickness: 5,
-                            color: lineColor1,
+                  ],
+                )),
+                Expanded(
+                  child: Column(
+                    children: [
+                      Text('School'),
+                      Expanded(
+                        child: Container(
+                          alignment: Alignment.center,
+                          child: StreamBuilder(
+                            builder: (context, snapshot) {
+                              Widget child;
+                              switch (snapshot.connectionState) {
+                                case ConnectionState.none:
+                                  child = Text('hello');
+                                  break;
+
+                                case ConnectionState.waiting:
+                                  child = CircularProgressIndicator();
+                                  break;
+
+                                case ConnectionState.active:
+                                  child = Text(
+                                    snapshot.data,
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold),
+                                  );
+                                  break;
+
+                                case ConnectionState.done:
+                                  child = Text('Done');
+                                  break;
+                              }
+                              return child;
+                            },
+                            stream: schoolCount,
                           ),
+                          decoration: BoxDecoration(
+                              color: circleColor3, shape: BoxShape.circle),
                         ),
-                      ],
-                    )),
-                    Expanded(
-                      child: Column(
-                        children: [
-                          Text('School'),
-                          Expanded(
-                            child: Container(
-                              alignment: Alignment.center,
-                              child: Text(
-                                schoolCount != null ? schoolCount : '',
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              decoration: BoxDecoration(
-                                  color: circleColor3, shape: BoxShape.circle),
-                            ),
-                          ),
-                        ],
                       ),
-                    )
-                    /*Padding(
+                    ],
+                  ),
+                )
+                /*Padding(
           padding: EdgeInsets.only(left: 12),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -281,10 +261,10 @@ class _LandingPageState extends State<LandingPage> {
             )),
           ],
           ),*/
-                  ],
-                )),
-          ),
-        ));
+              ],
+            )),
+      ),
+    );
   }
 
   @override
@@ -302,26 +282,12 @@ class _LandingPageState extends State<LandingPage> {
   }
 
   void loaddata() {
-    countData1 = foo('1');
+    homeCount = getcount('1');
+    movingCount = getcount('2');
+    schoolCount = getcount('3');
 
-    //countData.then((value) {
     setState(() {
       circleColor1 = Colors.green[300];
-      homeCount = toString();
-    });
-    // });
-    countData = gethomecount('2');
-    countData.then((value) {
-      setState(() {
-        movingCount = value;
-      });
-    });
-
-    countData = gethomecount('3');
-    countData.then((value) {
-      setState(() {
-        schoolCount = value;
-      });
     });
   }
 }
