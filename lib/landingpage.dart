@@ -1,8 +1,8 @@
 import 'dart:ui';
-import 'dart:convert';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter_application_1/DataModel.dart';
 import 'package:flutter_application_1/GetSharedPrefs.dart';
 import 'package:flutter_application_1/Grades.dart';
 import 'package:flutter_application_1/SignInAdmin.dart';
@@ -26,11 +26,13 @@ class LandingPage extends StatefulWidget {
   _LandingPageState createState() => _LandingPageState();
 }
 
-class _LandingPageState extends State<LandingPage> {
+class _LandingPageState extends State<LandingPage> with WidgetsBindingObserver {
   Color circleColor1, lineColor1, circleColor2, lineColor2, circleColor3;
   Stream homeCount, movingCount, schoolCount;
   Stream countData1;
   Future<String> countData;
+  AppLifecycleState _notifcation;
+  bool resumed = true;
 
   Stream<String> getcount(String countType) async* {
     SharedPreferences prefs = await GetSharedPrefs().getsharedpreferences();
@@ -40,7 +42,7 @@ class _LandingPageState extends State<LandingPage> {
     };
     String url = ("https://sktest87.000webhostapp.com/gethomecount.php");
     var response;
-    while (true) {
+    while (resumed) {
       response = await http.post(Uri.parse(url), body: data);
       if (response.statusCode == 200) {
         print(prefs.get('schoolid'));
@@ -86,6 +88,7 @@ class _LandingPageState extends State<LandingPage> {
                   child: Column(
                     children: [
                       Text('Home'),
+                      Text('last Notification:$_notifcation'),
                       Expanded(
                         child: Container(
                           alignment: Alignment.center,
@@ -270,6 +273,7 @@ class _LandingPageState extends State<LandingPage> {
   @override
   void initState() {
     // TODO: implement initState
+    WidgetsBinding.instance.addObserver(this);
     super.initState();
     //homeCount = '1';
     //movingCount = '2';
@@ -279,6 +283,31 @@ class _LandingPageState extends State<LandingPage> {
     circleColor1 =
         lineColor1 = circleColor2 = lineColor2 = circleColor3 = Colors.grey;
     loaddata();
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+    switch (state) {
+      case AppLifecycleState.paused:
+        resumed = false;
+
+        break;
+      case AppLifecycleState.resumed:
+        resumed = true;
+        loaddata();
+        break;
+    }
+    setState(() {
+      _notifcation = state;
+      print('state:' + state.toString());
+    });
   }
 
   void loaddata() {
