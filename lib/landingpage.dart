@@ -11,6 +11,7 @@ import 'package:flutter_application_1/students.dart';
 import 'package:flutter_application_1/Menu.dart';
 import 'package:flutter_application_1/Navigation.dart';
 import 'package:flutter_application_1/transactions.dart';
+import 'package:flutter_geofence/geofence.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
@@ -43,12 +44,16 @@ class _LandingPageState extends State<LandingPage> with WidgetsBindingObserver {
     String url = ("https://sktest87.000webhostapp.com/gethomecount.php");
     var response;
     while (resumed) {
+      Geofence.getCurrentLocation().then((coordinate) {
+        print(
+            "Your latitude is ${coordinate.latitude} and longitude ${coordinate.longitude}");
+      });
       response = await http.post(Uri.parse(url), body: data);
       if (response.statusCode == 200) {
         print(prefs.get('schoolid'));
-        print("data loaded");
+        //print("data loaded");
 
-        print(response.body);
+        //print(response.body);
 
         yield response.body.trim();
       } else {
@@ -88,38 +93,11 @@ class _LandingPageState extends State<LandingPage> with WidgetsBindingObserver {
                   child: Column(
                     children: [
                       Text('Home'),
-                      Text('last Notification:$_notifcation'),
                       Expanded(
                         child: Container(
                           alignment: Alignment.center,
-                          child: StreamBuilder(
-                            builder: (context, snapshot) {
-                              Widget child;
-                              switch (snapshot.connectionState) {
-                                case ConnectionState.none:
-                                  child = Text('hello');
-                                  break;
-
-                                case ConnectionState.waiting:
-                                  child = CircularProgressIndicator();
-                                  break;
-
-                                case ConnectionState.active:
-                                  child = Text(
-                                    snapshot.data,
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.bold),
-                                  );
-                                  break;
-
-                                case ConnectionState.done:
-                                  child = Text('Done');
-                                  break;
-                              }
-                              return child;
-                            },
-                            stream: homeCount,
+                          child: StreamB(
+                            count: homeCount,
                           ),
                           decoration: BoxDecoration(
                               color: circleColor1, shape: BoxShape.circle),
@@ -147,34 +125,9 @@ class _LandingPageState extends State<LandingPage> with WidgetsBindingObserver {
                       Expanded(
                         child: Container(
                           alignment: Alignment.center,
-                          child: StreamBuilder(
-                              builder: (context, snapshot) {
-                                Widget child;
-                                switch (snapshot.connectionState) {
-                                  case ConnectionState.none:
-                                    child = Text('hello');
-                                    break;
-
-                                  case ConnectionState.waiting:
-                                    child = CircularProgressIndicator();
-                                    break;
-
-                                  case ConnectionState.active:
-                                    child = Text(
-                                      snapshot.data,
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.bold),
-                                    );
-                                    break;
-
-                                  case ConnectionState.done:
-                                    child = Text('Done');
-                                    break;
-                                }
-                                return child;
-                              },
-                              stream: movingCount),
+                          child: StreamB(
+                            count: movingCount,
+                          ),
                           decoration: BoxDecoration(
                               color: circleColor2, shape: BoxShape.circle),
                         ),
@@ -201,34 +154,8 @@ class _LandingPageState extends State<LandingPage> with WidgetsBindingObserver {
                       Expanded(
                         child: Container(
                           alignment: Alignment.center,
-                          child: StreamBuilder(
-                            builder: (context, snapshot) {
-                              Widget child;
-                              switch (snapshot.connectionState) {
-                                case ConnectionState.none:
-                                  child = Text('hello');
-                                  break;
-
-                                case ConnectionState.waiting:
-                                  child = CircularProgressIndicator();
-                                  break;
-
-                                case ConnectionState.active:
-                                  child = Text(
-                                    snapshot.data,
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.bold),
-                                  );
-                                  break;
-
-                                case ConnectionState.done:
-                                  child = Text('Done');
-                                  break;
-                              }
-                              return child;
-                            },
-                            stream: schoolCount,
+                          child: StreamB(
+                            count: schoolCount,
                           ),
                           decoration: BoxDecoration(
                               color: circleColor3, shape: BoxShape.circle),
@@ -274,6 +201,7 @@ class _LandingPageState extends State<LandingPage> with WidgetsBindingObserver {
   void initState() {
     // TODO: implement initState
     WidgetsBinding.instance.addObserver(this);
+    initPlatformState();
     super.initState();
     //homeCount = '1';
     //movingCount = '2';
@@ -319,6 +247,78 @@ class _LandingPageState extends State<LandingPage> with WidgetsBindingObserver {
       circleColor1 = Colors.green[300];
     });
   }
+}
+
+class StreamB extends StatefulWidget {
+  final Stream count;
+  const StreamB({
+    Key key,
+    this.count,
+  }) : super(key: key);
+
+  @override
+  _StreamB createState() => _StreamB();
+}
+
+class _StreamB extends State<StreamB> {
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder(
+      builder: (context, snapshot) {
+        Widget child;
+        switch (snapshot.connectionState) {
+          case ConnectionState.none:
+            child = Text('hello');
+            break;
+
+          case ConnectionState.waiting:
+            child = CircularProgressIndicator();
+            break;
+
+          case ConnectionState.active:
+            child = Text(
+              snapshot.data,
+              style:
+                  TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+            );
+            break;
+
+          case ConnectionState.done:
+            child = Text('Done');
+            break;
+        }
+        return child;
+      },
+      stream: widget.count,
+    );
+  }
+}
+
+Future<void> initPlatformState() async {
+  // If the widget was removed from the tree while the asynchronous platform
+  // message was in flight, we want to discard the reply rather than calling
+  // setState to update our non-existent appearance.
+  // if (!mounted) return;
+  Geofence.initialize();
+  Geofence.requestPermissions();
+  Geofence.startListening(GeolocationEvent.entry, (entry) {
+    print('Latitude: ' +
+        entry.latitude.toString() +
+        '  longitude: ' +
+        entry.longitude.toString());
+  });
+
+  Geofence.startListening(GeolocationEvent.exit, (entry) {
+    print('Latitude: ' +
+        entry.latitude.toString() +
+        '  longitude: ' +
+        entry.longitude.toString());
+  });
+
+  Geofence.getCurrentLocation().then((coordinate) {
+    print(
+        "Your latitude is ${coordinate.latitude} and longitude ${coordinate.longitude}");
+  });
 }
 
 void choiceAction(String choice, BuildContext context) async {

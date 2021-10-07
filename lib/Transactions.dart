@@ -4,6 +4,7 @@ import 'dart:async';
 import 'package:flutter_application_1/Navigation.dart';
 import 'package:flutter_application_1/Student.dart';
 import 'package:flutter_application_1/UpdateStudentStatus.dart';
+import 'package:flutter_geofence/geofence.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
@@ -36,9 +37,9 @@ class _NameState extends State<Transactions> {
       print("data loaded");
       var id = Uuid();
       var v4 = id.v4();
-      print(v4);
+      // print(v4);
 
-      print(response.body);
+      // print(response.body);
 
       var studentsJson = jsonDecode(response.body);
       for (var studentJson in studentsJson) {
@@ -167,11 +168,39 @@ class _NameState extends State<Transactions> {
   @override
   void initState() {
     super.initState();
+    initPlatformState();
     setState(() {
       dateText.text = date.toString();
       _studentList = getdata();
     });
   }
+}
+
+Future<void> initPlatformState() async {
+  // If the widget was removed from the tree while the asynchronous platform
+  // message was in flight, we want to discard the reply rather than calling
+  // setState to update our non-existent appearance.
+  // if (!mounted) return;
+  Geofence.initialize();
+  Geofence.requestPermissions();
+  Geofence.startListening(GeolocationEvent.entry, (entry) {
+    print('Latitude: ' +
+        entry.latitude.toString() +
+        '  longitude: ' +
+        entry.longitude.toString());
+  });
+
+  Geofence.startListening(GeolocationEvent.exit, (entry) {
+    print('Latitude: ' +
+        entry.latitude.toString() +
+        '  longitude: ' +
+        entry.longitude.toString());
+  });
+
+  Geofence.getCurrentLocation().then((coordinate) {
+    print(
+        "Your latitude is ${coordinate.latitude} and longitude ${coordinate.longitude}");
+  });
 }
 
 itemSelected(
