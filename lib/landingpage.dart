@@ -44,13 +44,13 @@ class _LandingPageState extends State<LandingPage> with WidgetsBindingObserver {
     String url = ("https://sktest87.000webhostapp.com/gethomecount.php");
     var response;
     while (resumed) {
-      Geofence.getCurrentLocation().then((coordinate) {
-        print(
-            "Your latitude is ${coordinate.latitude} and longitude ${coordinate.longitude}");
-      });
+      //   Geofence.getCurrentLocation().then((coordinate) {
+      //   print(
+      //     "Your latitude is ${coordinate.latitude} and longitude ${coordinate.longitude}");
+      //});
       response = await http.post(Uri.parse(url), body: data);
       if (response.statusCode == 200) {
-        print(prefs.get('schoolid'));
+        //print(prefs.get('schoolid'));
         //print("data loaded");
 
         //print(response.body);
@@ -174,7 +174,7 @@ class _LandingPageState extends State<LandingPage> with WidgetsBindingObserver {
             Text('data'),
             CustomPaint(
               painter: ShapeCircle1(
-                circleColor1: Colors.grey,
+            circleColor1: Colors.grey,
               ),
             ),
             ],
@@ -201,7 +201,7 @@ class _LandingPageState extends State<LandingPage> with WidgetsBindingObserver {
   void initState() {
     // TODO: implement initState
     WidgetsBinding.instance.addObserver(this);
-    initPlatformState();
+    // initPlatformState();
     super.initState();
     //homeCount = '1';
     //movingCount = '2';

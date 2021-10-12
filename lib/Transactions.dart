@@ -168,7 +168,7 @@ class _NameState extends State<Transactions> {
   @override
   void initState() {
     super.initState();
-    initPlatformState();
+    // initPlatformState();
     setState(() {
       dateText.text = date.toString();
       _studentList = getdata();

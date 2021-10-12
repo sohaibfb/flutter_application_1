@@ -1,5 +1,7 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_geofence/geofence.dart';
 import 'package:http/http.dart' as http;
 
 class UpdateStudentStatus extends StatefulWidget {
@@ -27,9 +29,12 @@ class UpdateStudentStatus extends StatefulWidget {
 }
 
 class _NameState extends State<UpdateStudentStatus> {
+  double _latitude;
+  double _longitude;
+  StreamSubscription test;
+  Geolocation _geolocation;
   Future<String> updatedata(String type) async {
     String moveType;
-    SharedPreferences prefs = await SharedPreferences.getInstance();
     if (type == "school") {
       moveType = '1';
       print('movetype: ' + moveType);
@@ -114,13 +119,71 @@ class _NameState extends State<UpdateStudentStatus> {
                           onPressed: () {
                             updatedata('bus');
                           },
-                          child: Text('move to bus'))
+                          child: Text('move to bus')),
+                      ElevatedButton(
+                          onPressed: () {
+                            getLocation();
+                          },
+                          child: Text('get direction'))
                     ],
                   ),
-                )
+                ),
+                Text('Latitude:  ' +
+                    _latitude.toString() +
+                    '  longtitude:  ' +
+                    _longitude.toString()),
               ],
             ),
           ),
         ));
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    initPlatformState();
+  }
+
+  @override
+  @override
+  void dispose() {
+    super.dispose();
+    Geofence.removeAllGeolocations();
+    Geofence.stopListeningForLocationChanges();
+  }
+
+  Future<void> initPlatformState() async {
+    // If the widget was removed from the tree while the asynchronous platform
+    // message was in flight, we want to discard the reply rather than calling
+    // setState to update our non-existent appearance.
+    if (!mounted) return;
+    Geofence.initialize();
+    Geofence.requestPermissions();
+    Geofence.startListening(GeolocationEvent.entry, (entry) {
+      print('Latitude: ' +
+          entry.latitude.toString() +
+          '  longitude: ' +
+          entry.longitude.toString());
+    });
+
+    Geofence.startListening(GeolocationEvent.exit, (entry) {
+      print('Latitude: ' +
+          entry.latitude.toString() +
+          '  longitude: ' +
+          entry.longitude.toString());
+    });
+    //Geofence.addGeolocation(Geofence.getCurrentLocation(),)
+    getLocation();
+  }
+
+  getLocation() {
+    Geofence.getCurrentLocation().then((coordinate) {
+      print(
+          "Your latitude is ${coordinate.latitude} and longitude ${coordinate.longitude}");
+      setState(() {
+        _latitude = coordinate.latitude;
+        _longitude = coordinate.longitude;
+      });
+    });
   }
 }
