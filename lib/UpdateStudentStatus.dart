@@ -173,7 +173,8 @@ class _NameState extends State<UpdateStudentStatus> {
           entry.longitude.toString());
     });
     //Geofence.addGeolocation(Geofence.getCurrentLocation(),)
-    getLocation();
+    //getLocation();
+    setState(() {});
   }
 
   getLocation() {
