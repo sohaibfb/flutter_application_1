@@ -6,6 +6,7 @@ import 'package:flutter_application_1/Navigation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'LoadingPageAdmin.dart';
 import 'ParentPendingRequest.dart';
+import 'package:flutter_geofence/geofence.dart';
 
 class AccountHomepage extends StatefulWidget {
   @override
@@ -47,6 +48,38 @@ class _AccountHomepageState extends State<AccountHomepage> {
         ],
       )),
     );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    initPlatformState();
+  }
+
+  Future<void> initPlatformState() async {
+    // If the widget was removed from the tree while the asynchronous platform
+    // message was in flight, we want to discard the reply rather than calling
+    // setState to update our non-existent appearance.
+    if (!mounted) return;
+    Geofence.requestPermissions();
+    Geofence.initialize();
+
+    Geofence.startListening(GeolocationEvent.entry, (entry) {
+      print('Latitude: ' +
+          entry.latitude.toString() +
+          '  longitude: ' +
+          entry.longitude.toString());
+    });
+
+    Geofence.startListening(GeolocationEvent.exit, (entry) {
+      print('Latitude: ' +
+          entry.latitude.toString() +
+          '  longitude: ' +
+          entry.longitude.toString());
+    });
+    //Geofence.addGeolocation(Geofence.getCurrentLocation(),)
+    //getLocation();
+    setState(() {});
   }
 }
 

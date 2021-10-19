@@ -141,15 +141,15 @@ class _NameState extends State<UpdateStudentStatus> {
   @override
   void initState() {
     super.initState();
-    initPlatformState();
+    // initPlatformState();
   }
 
   @override
   @override
   void dispose() {
     super.dispose();
-    Geofence.removeAllGeolocations();
-    Geofence.stopListeningForLocationChanges();
+    //  Geofence.removeAllGeolocations();
+    //Geofence.stopListeningForLocationChanges();
   }
 
   Future<void> initPlatformState() async {
@@ -158,7 +158,7 @@ class _NameState extends State<UpdateStudentStatus> {
     // setState to update our non-existent appearance.
     if (!mounted) return;
     Geofence.initialize();
-    Geofence.requestPermissions();
+
     Geofence.startListening(GeolocationEvent.entry, (entry) {
       print('Latitude: ' +
           entry.latitude.toString() +
