@@ -15,6 +15,8 @@ import 'package:flutter_geofence/geofence.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
+
+import 'Locations.dart';
 //import 'package:flutter_shapes/flutter_shapes.dart';
 //import 'package:flutter_application_1/ShapeCircle1.dart';
 //import 'package:flutter_application_1/ShapeCircle2.dart';
@@ -201,7 +203,7 @@ class _LandingPageState extends State<LandingPage> with WidgetsBindingObserver {
   void initState() {
     // TODO: implement initState
     WidgetsBinding.instance.addObserver(this);
-    // initPlatformState();
+
     super.initState();
     //homeCount = '1';
     //movingCount = '2';
@@ -294,33 +296,6 @@ class _StreamB extends State<StreamB> {
   }
 }
 
-Future<void> initPlatformState() async {
-  // If the widget was removed from the tree while the asynchronous platform
-  // message was in flight, we want to discard the reply rather than calling
-  // setState to update our non-existent appearance.
-  // if (!mounted) return;
-  Geofence.initialize();
-  Geofence.requestPermissions();
-  Geofence.startListening(GeolocationEvent.entry, (entry) {
-    print('Latitude: ' +
-        entry.latitude.toString() +
-        '  longitude: ' +
-        entry.longitude.toString());
-  });
-
-  Geofence.startListening(GeolocationEvent.exit, (entry) {
-    print('Latitude: ' +
-        entry.latitude.toString() +
-        '  longitude: ' +
-        entry.longitude.toString());
-  });
-
-  Geofence.getCurrentLocation().then((coordinate) {
-    print(
-        "Your latitude is ${coordinate.latitude} and longitude ${coordinate.longitude}");
-  });
-}
-
 void choiceAction(String choice, BuildContext context) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   switch (choice) {
@@ -334,6 +309,10 @@ void choiceAction(String choice, BuildContext context) async {
 
     case Menu.settings_accounts_and_permissions:
       Navigation().navigater(context, Users());
+      break;
+
+    case Menu.settings_location:
+      Navigation().navigater(context, Locations());
       break;
 
     case Menu.settings_transactions:
