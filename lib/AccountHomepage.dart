@@ -1,3 +1,4 @@
+import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/AccountStudents.dart';
 import 'package:flutter_application_1/SignIn.dart';
@@ -22,16 +23,20 @@ class _AccountHomepageState extends State<AccountHomepage> {
         title: Text("Homepage"),
         actions: <Widget>[
           IconButton(icon: Icon(Icons.search), onPressed: () {}),
-          PopupMenuButton<String>(
-              onSelected: (choice) => choiceAction(choice, context),
-              itemBuilder: (BuildContext context) {
-                return Menu.accountMenuChoice.map((String choice) {
-                  return PopupMenuItem<String>(
-                    child: Text(choice),
-                    value: choice,
-                  );
-                }).toList();
-              })
+          Badge(
+            badgeContent: null,
+            position: BadgePosition.topEnd(top: 10, end: 10),
+            child: PopupMenuButton<String>(
+                onSelected: (choice) => choiceAction(choice, context),
+                itemBuilder: (BuildContext context) {
+                  return Menu.accountMenuChoice.map((String choice) {
+                    return PopupMenuItem<String>(
+                      child: Text(choice),
+                      value: choice,
+                    );
+                  }).toList();
+                }),
+          )
         ],
       ),
       body: Center(
@@ -64,7 +69,7 @@ class _AccountHomepageState extends State<AccountHomepage> {
     Geofence.requestPermissions();
     Geofence.initialize();
 
-    Geofence.startListening(GeolocationEvent.entry, (entry) {
+    /*Geofence.startListening(GeolocationEvent.entry, (entry) {
       print('Latitude: ' +
           entry.latitude.toString() +
           '  longitude: ' +
@@ -76,8 +81,8 @@ class _AccountHomepageState extends State<AccountHomepage> {
           entry.latitude.toString() +
           '  longitude: ' +
           entry.longitude.toString());
-    });
-    //Geofence.addGeolocation(Geofence.getCurrentLocation(),)
+    });*/
+
     //getLocation();
     setState(() {});
   }

@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/AddLocation.dart';
 import 'package:flutter_application_1/Classes.dart';
 import 'package:flutter_application_1/Location.dart';
+import 'package:flutter_application_1/LocationDetails.dart';
 import 'dart:async';
 import 'package:flutter_application_1/Navigation.dart';
-import 'package:flutter_application_1/Grade.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -73,7 +73,11 @@ class _NameState extends State<Locations> {
                     itemBuilder: (BuildContext context, int index) {
                       return GestureDetector(
                         onTap: () => itemSelected(
-                            locationData[index].serialCode, context),
+                            locationData[index].englishDescription,
+                            locationData[index].latitude,
+                            locationData[index].longitude,
+                            locationData[index].radius,
+                            context),
                         child: Container(
                           child: Card(
                             child: Padding(
@@ -129,9 +133,13 @@ class _NameState extends State<Locations> {
   }
 }
 
-void itemSelected(String serialCode, BuildContext context) {
+void itemSelected(String name, String latitude, String longitude, String radius,
+    BuildContext context) {
   Navigator.of(context).push(MaterialPageRoute(
-      builder: (context) => Classes(
-            serialCode: serialCode,
+      builder: (context) => LocationDetails(
+            name: name,
+            latitude: latitude,
+            longitude: longitude,
+            radius: radius,
           )));
 }

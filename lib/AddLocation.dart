@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_geofence/geofence.dart';
 import 'dart:async';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -34,6 +35,15 @@ class _NameState extends State<AddLocation> {
 
     var response = await http.post(Uri.parse(url), body: data);
     if (response.statusCode == 200) {
+      Geolocation location = Geolocation(
+          latitude: double.parse(latitude.text),
+          longitude: double.parse(longitude.text),
+          radius: double.parse(radius.text),
+          id: englishName.text);
+
+      Geofence.addGeolocation(location, GeolocationEvent.entry)
+          .then((value) => print('Geofence added successfully'));
+
       print(response.body);
       Navigator.pop(context, 'success');
     } else {
@@ -116,7 +126,17 @@ class _NameState extends State<AddLocation> {
                           senddata();
                           // } else {}
                         },
-                        child: Text('Add class')),
+                        child: Text('Add GeoFence')),
+                    ElevatedButton(
+                        onPressed: () {
+                          print("pressed");
+
+                          Geofence.getCurrentLocation().then((value) {
+                            latitude.text = value.latitude.toString();
+                            longitude.text = value.longitude.toString();
+                          });
+                        },
+                        child: Text('get Location'))
                   ],
                 ))));
   }

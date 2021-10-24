@@ -52,11 +52,6 @@ class _LandingPageState extends State<LandingPage> with WidgetsBindingObserver {
       //});
       response = await http.post(Uri.parse(url), body: data);
       if (response.statusCode == 200) {
-        //print(prefs.get('schoolid'));
-        //print("data loaded");
-
-        //print(response.body);
-
         yield response.body.trim();
       } else {
         throw Exception("failed to load");

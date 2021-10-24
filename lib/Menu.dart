@@ -1,3 +1,5 @@
+import 'package:badges/badges.dart';
+
 class Menu {
   static const String Profile = "Profile";
   static const String settings_students = "students";
