@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_geofence/geofence.dart';
 import 'package:http/http.dart' as http;
@@ -31,8 +32,9 @@ class UpdateStudentStatus extends StatefulWidget {
 class _NameState extends State<UpdateStudentStatus> {
   double _latitude;
   double _longitude;
-  StreamSubscription test;
-  Geolocation _geolocation;
+  String _notification = '0';
+  bool _showBadge = false;
+
   Future<String> updatedata(String type) async {
     String moveType;
     if (type == "school") {
@@ -88,6 +90,12 @@ class _NameState extends State<UpdateStudentStatus> {
                 Column(
                   children: [
                     Text("  "),
+                    Badge(
+                      child: Icon(Icons.notifications_active),
+                      badgeContent: Text(_notification),
+                      showBadge: _showBadge,
+                      animationType: BadgeAnimationType.scale,
+                    ),
                     Text(
                       widget.firstName + "  " + widget.lastName,
                       style:
@@ -141,7 +149,7 @@ class _NameState extends State<UpdateStudentStatus> {
   @override
   void initState() {
     super.initState();
-    // initPlatformState();
+    initPlatformState();
   }
 
   @override
@@ -157,24 +165,21 @@ class _NameState extends State<UpdateStudentStatus> {
     // message was in flight, we want to discard the reply rather than calling
     // setState to update our non-existent appearance.
     if (!mounted) return;
-    Geofence.initialize();
+    //  Geofence.initialize();
 
     Geofence.startListening(GeolocationEvent.entry, (entry) {
-      print('Latitude: ' +
-          entry.latitude.toString() +
-          '  longitude: ' +
-          entry.longitude.toString());
+      setState(() {
+        _notification = '1';
+      });
     });
 
     Geofence.startListening(GeolocationEvent.exit, (entry) {
-      print('Latitude: ' +
-          entry.latitude.toString() +
-          '  longitude: ' +
-          entry.longitude.toString());
+      setState(() {
+        _notification = entry.id;
+      });
     });
     //Geofence.addGeolocation(Geofence.getCurrentLocation(),)
     //getLocation();
-    setState(() {});
   }
 
   getLocation() {
@@ -184,6 +189,7 @@ class _NameState extends State<UpdateStudentStatus> {
       setState(() {
         _latitude = coordinate.latitude;
         _longitude = coordinate.longitude;
+        _showBadge = true;
       });
     });
   }
