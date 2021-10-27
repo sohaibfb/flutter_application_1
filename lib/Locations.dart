@@ -29,8 +29,7 @@ class _NameState extends State<Locations> {
     var response = await http.post(Uri.parse(url), body: data);
     List<Location> locationList = [];
     if (response.statusCode == 200) {
-      print(prefs.get('schoolid'));
-      print("data loaded");
+      //print(prefs.get('schoolid'));
 
       print(response.body);
 
@@ -97,6 +96,10 @@ class _NameState extends State<Locations> {
                                               .arabicDescription),
                                       Text(" "),
                                       Text(locationData[index].id),
+                                      Text("  "),
+                                      Text(locationData[index]
+                                          .latitude
+                                          .toString()),
                                     ],
                                   ),
                                 ],

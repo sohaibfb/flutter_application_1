@@ -42,7 +42,7 @@ class _NameState extends State<AddLocation> {
           id: englishName.text);
 
       Geofence.addGeolocation(location, GeolocationEvent.entry)
-          .then((value) => print('Geofence added successfully'));
+          .then((value) => print('Latitude: ' + location.latitude.toString()));
 
       print(response.body);
       Navigator.pop(context, 'success');
